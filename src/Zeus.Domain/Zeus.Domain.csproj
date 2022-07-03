@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+      <TargetFramework>net7.0</TargetFramework>
+      <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+      <ImplicitUsings>false</ImplicitUsings>
+      <LangVersion>latest</LangVersion>
+      <Nullable>enable</Nullable>
+      <PlatformTarget>AnyCPU</PlatformTarget>
+      <RootNamespace>Zeus.Domain</RootNamespace>
+      <Version>1.0.0</Version>
+   </PropertyGroup>
+
+   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+      <DebugSymbols>false</DebugSymbols>
+      <DebugType>None</DebugType>
+      <DefineTrace>false</DefineTrace>
+      <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+      <Optimize>true</Optimize>
+   </PropertyGroup>
+
+   <ItemGroup>
+      <ProjectReference Include="..\Zeus.Enums\Zeus.Enums.csproj" />
+      <ProjectReference Include="..\Zeus.Utilities\Zeus.Utilities.csproj" />
+   </ItemGroup>
+
+</Project>

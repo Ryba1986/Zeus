@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D77D3983-B985-4AFF-A359-57980DC40555}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Utilities", "src\Zeus.Utilities\Zeus.Utilities.csproj", "{E7370468-5EEA-4597-A32A-6983855104DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Enums", "src\Zeus.Enums\Zeus.Enums.csproj", "{0616689D-10C9-4725-8874-00CEB8217A1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Domain", "src\Zeus.Domain\Zeus.Domain.csproj", "{64EEE769-E8B7-4ED8-A2CC-FB6FB5FD41C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Models", "src\Zeus.Models\Zeus.Models.csproj", "{EAAEFAB2-56A7-426A-8E5D-B0C7709317A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Validators", "src\Zeus.Validators\Zeus.Validators.csproj", "{7A961772-4A22-4E2F-853E-C50AB8CFBA65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Infrastructure", "src\Zeus.Infrastructure\Zeus.Infrastructure.csproj", "{A7E32B76-2560-4BB2-B8A8-46C87CAC75F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7370468-5EEA-4597-A32A-6983855104DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7370468-5EEA-4597-A32A-6983855104DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7370468-5EEA-4597-A32A-6983855104DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7370468-5EEA-4597-A32A-6983855104DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0616689D-10C9-4725-8874-00CEB8217A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0616689D-10C9-4725-8874-00CEB8217A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0616689D-10C9-4725-8874-00CEB8217A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0616689D-10C9-4725-8874-00CEB8217A1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64EEE769-E8B7-4ED8-A2CC-FB6FB5FD41C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64EEE769-E8B7-4ED8-A2CC-FB6FB5FD41C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64EEE769-E8B7-4ED8-A2CC-FB6FB5FD41C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64EEE769-E8B7-4ED8-A2CC-FB6FB5FD41C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAAEFAB2-56A7-426A-8E5D-B0C7709317A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAAEFAB2-56A7-426A-8E5D-B0C7709317A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAAEFAB2-56A7-426A-8E5D-B0C7709317A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAAEFAB2-56A7-426A-8E5D-B0C7709317A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A961772-4A22-4E2F-853E-C50AB8CFBA65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A961772-4A22-4E2F-853E-C50AB8CFBA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A961772-4A22-4E2F-853E-C50AB8CFBA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A961772-4A22-4E2F-853E-C50AB8CFBA65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E32B76-2560-4BB2-B8A8-46C87CAC75F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E32B76-2560-4BB2-B8A8-46C87CAC75F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E32B76-2560-4BB2-B8A8-46C87CAC75F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E32B76-2560-4BB2-B8A8-46C87CAC75F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E7370468-5EEA-4597-A32A-6983855104DC} = {D77D3983-B985-4AFF-A359-57980DC40555}
+		{0616689D-10C9-4725-8874-00CEB8217A1F} = {D77D3983-B985-4AFF-A359-57980DC40555}
+		{64EEE769-E8B7-4ED8-A2CC-FB6FB5FD41C1} = {D77D3983-B985-4AFF-A359-57980DC40555}
+		{EAAEFAB2-56A7-426A-8E5D-B0C7709317A5} = {D77D3983-B985-4AFF-A359-57980DC40555}
+		{7A961772-4A22-4E2F-853E-C50AB8CFBA65} = {D77D3983-B985-4AFF-A359-57980DC40555}
+		{A7E32B76-2560-4BB2-B8A8-46C87CAC75F3} = {D77D3983-B985-4AFF-A359-57980DC40555}
+	EndGlobalSection
+EndGlobal
