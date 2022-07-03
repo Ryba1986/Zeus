@@ -44,7 +44,7 @@ namespace Zeus.Infrastructure.Repositories
          Rvd145 = _database.GetCollection<Rvd145>(nameof(Rvd145));
       }
 
-      public async Task<Result> ExecuteTransaction(Func<IClientSessionHandle, CancellationToken, Task> action, CancellationToken cancellationToken)
+      public async Task<Result> ExecuteTransactionAsync(Func<IClientSessionHandle, CancellationToken, Task> action, CancellationToken cancellationToken)
       {
          using IClientSessionHandle session = await _database.Client.StartSessionAsync(cancellationToken: cancellationToken);
          try
