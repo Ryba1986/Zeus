@@ -8,12 +8,12 @@ namespace Zeus.Infrastructure.Mongo
    {
       public override DateTime Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
       {
-         return new DateTime(base.Deserialize(context, args).Ticks, DateTimeKind.Local);
+         return new(base.Deserialize(context, args).Ticks, DateTimeKind.Local);
       }
 
       public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DateTime value)
       {
-         base.Serialize(context, args, new DateTime(value.Ticks, DateTimeKind.Utc));
+         base.Serialize(context, args, new(value.Ticks, DateTimeKind.Utc));
       }
    }
 }
