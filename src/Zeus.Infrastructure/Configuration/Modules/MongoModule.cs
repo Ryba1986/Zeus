@@ -5,9 +5,9 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using Zeus.Infrastructure.Mongo;
 using Zeus.Infrastructure.Repositories;
+using Zeus.Infrastructure.Repositories.Configurations;
 using Zeus.Infrastructure.Settings;
 
 namespace Zeus.Infrastructure.Configuration.Modules
@@ -35,7 +35,11 @@ namespace Zeus.Infrastructure.Configuration.Modules
 
          builder.Register((MongoSettings settings, IMongoClient client) =>
          {
-            return client.GetDatabase(settings.Database);
+            IMongoDatabase database = client.GetDatabase(settings.Database);
+
+            MongoConfiguration.SetupAsync(database).Wait();
+
+            return database;
          })
          .As<IMongoDatabase>()
          .SingleInstance();
