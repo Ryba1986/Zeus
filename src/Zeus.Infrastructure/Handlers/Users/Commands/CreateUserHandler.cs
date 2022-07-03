@@ -56,8 +56,9 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
             {
                await _uow.User.InsertOneAsync(session, newUser, cancellationToken: token);
                await _uow.UserHistory.InsertOneAsync(session, new(newUser.Id, newUser.Name, newUser.Email, newUser.Role.GetDescription(), newUser.IsActive, createdBy.Id), cancellationToken: token);
-            }
-            , cancellationToken);
+            },
+            cancellationToken
+         );
       }
    }
 }

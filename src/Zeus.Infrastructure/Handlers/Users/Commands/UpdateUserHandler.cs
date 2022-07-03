@@ -86,8 +86,9 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
 
                existingUser.Update(request.Name, request.Email, request.Role, request.IsActive);
                await _uow.User.ReplaceOneAsync(session, x => x.Id == existingUser.Id, existingUser, cancellationToken: token);
-            }
-            , cancellationToken);
+            },
+            cancellationToken
+         );
       }
 
       private async Task CreateHistory(IClientSessionHandle session, User user, UpdateUserCommand request, User createdBy, CancellationToken cancellationToken)
