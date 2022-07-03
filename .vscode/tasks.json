@@ -1,0 +1,41 @@
+{
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "label": "ApiClient",
+         "command": "dotnet",
+         "type": "process",
+         "args": [
+            "build",
+            "${workspaceFolder}/src/Zeus.Api.Client/Zeus.Api.Client.csproj",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+         ],
+         "problemMatcher": "$msCompile"
+      },
+      {
+         "label": "ApiWeb",
+         "command": "dotnet",
+         "type": "process",
+         "args": [
+            "build",
+            "${workspaceFolder}/src/Zeus.Api.Web/Zeus.Api.Web.csproj",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+         ],
+         "problemMatcher": "$msCompile"
+      },
+      {
+         "label": "Client",
+         "command": "dotnet",
+         "type": "process",
+         "args": [
+            "build",
+            "${workspaceFolder}/src/Zeus.Client/Zeus.Client.csproj",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+         ],
+         "problemMatcher": "$msCompile"
+      }
+   ]
+}

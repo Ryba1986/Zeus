@@ -1,0 +1,42 @@
+{
+   "version": "0.2.0",
+   "configurations": [
+      {
+         "name": "ApiClient",
+         "type": "coreclr",
+         "request": "launch",
+         "preLaunchTask": "ApiClient",
+         "program": "${workspaceFolder}/src/Zeus.Api.Client/bin/Debug/net7.0/Zeus.Api.Client.dll",
+         "args": [],
+         "cwd": "${workspaceFolder}/src/Zeus.Api.Client",
+         "stopAtEntry": false,
+         "env": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+         }
+      },
+      {
+         "name": "ApiWeb",
+         "type": "coreclr",
+         "request": "launch",
+         "preLaunchTask": "ApiWeb",
+         "program": "${workspaceFolder}/src/Zeus.Api.Web/bin/Debug/net7.0/Zeus.Api.Web.dll",
+         "args": [],
+         "cwd": "${workspaceFolder}/src/Zeus.Api.Web",
+         "stopAtEntry": false,
+         "env": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+         }
+      },
+      {
+         "name": "Client",
+         "type": "coreclr",
+         "request": "launch",
+         "preLaunchTask": "Client",
+         "program": "${workspaceFolder}/src/Zeus.Client/bin/Debug/net7.0/Zeus.Client.dll",
+         "args": [],
+         "cwd": "${workspaceFolder}/src/Zeus.Client",
+         "console": "internalConsole",
+         "stopAtEntry": false
+      }
+   ]
+}
