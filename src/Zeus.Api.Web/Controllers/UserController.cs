@@ -69,7 +69,7 @@ namespace Zeus.Api.Web.Controllers
 
       [AllowAnonymous]
       [HttpPost]
-      public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordUserCommand request)
+      public async Task<IActionResult> ChangePasswordUser([FromBody] ChangePasswordUserCommand request)
       {
          return await SendAsync(request);
       }
