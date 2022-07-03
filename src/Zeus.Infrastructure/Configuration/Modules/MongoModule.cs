@@ -26,7 +26,6 @@ namespace Zeus.Infrastructure.Configuration.Modules
          {
             return new MongoClient(new MongoClientSettings()
             {
-               LinqProvider = LinqProvider.V3,
                ReplicaSetName = settings.ReplicaSetName,
                Server = new MongoServerAddress(settings.Server, settings.Port)
             });
