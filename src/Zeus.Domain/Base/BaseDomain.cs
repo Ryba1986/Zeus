@@ -6,7 +6,7 @@ namespace Zeus.Domain.Base
    {
       public int Id { get; init; }
       public bool IsActive { get; protected set; }
-      public short Version { get; init; }
+      public short Version { get; protected set; }
 
       public BaseDomain(bool isActive)
       {
