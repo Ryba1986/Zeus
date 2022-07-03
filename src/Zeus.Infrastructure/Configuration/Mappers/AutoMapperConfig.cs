@@ -7,10 +7,10 @@ namespace Zeus.Infrastructure.Configuration.Mappers
    {
       public static IMapper Initialize(Assembly assembly)
       {
-         return new MapperConfiguration(cfg =>
-            cfg.AddMaps(assembly)
-         )
-         .CreateMapper();
+         MapperConfiguration config = new(cfg => cfg.AddMaps(assembly));
+         config.CompileMappings();
+
+         return config.CreateMapper();
       }
    }
 }
