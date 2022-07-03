@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Zeus.Infrastructure.Mongo;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Infrastructure.Settings;
@@ -25,6 +26,7 @@ namespace Zeus.Infrastructure.Configuration.Modules
          {
             return new MongoClient(new MongoClientSettings()
             {
+               LinqProvider = LinqProvider.V3,
                ReplicaSetName = settings.ReplicaSetName,
                Server = new MongoServerAddress(settings.Server, settings.Port)
             });
