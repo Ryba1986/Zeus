@@ -2,7 +2,7 @@ using System;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace Zeus.Infrastructure.Repositories.Helpers
+namespace Zeus.Infrastructure.Mongo
 {
    internal sealed class MongoDateSerializer : DateTimeSerializer
    {

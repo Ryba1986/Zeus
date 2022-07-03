@@ -2,7 +2,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MongoDB.Driver.Linq;
 
-namespace Zeus.Infrastructure.Repositories.Extensions
+namespace Zeus.Infrastructure.Mongo
 {
    internal static class MongoLinqExtensions
    {

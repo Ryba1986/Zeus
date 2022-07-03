@@ -5,15 +5,15 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Zeus.Infrastructure.Mongo;
 using Zeus.Infrastructure.Repositories;
-using Zeus.Infrastructure.Repositories.Helpers;
 using Zeus.Infrastructure.Settings;
 
 namespace Zeus.Infrastructure.Configuration.Modules
 {
-   internal sealed class MongoDbModule : Module
+   internal sealed class MongoModule : Module
    {
-      public MongoDbModule()
+      public MongoModule()
       {
          BsonSerializer.RegisterSerializer(typeof(float), new SingleSerializer(BsonType.Double, new RepresentationConverter(false, true)));
          BsonSerializer.RegisterSerializer(typeof(DateTime), new MongoDateSerializer());
