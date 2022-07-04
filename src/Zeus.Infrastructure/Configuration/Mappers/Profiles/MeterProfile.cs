@@ -10,6 +10,8 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
    {
       public MeterProfile()
       {
+         CreateProjection<Meter, MeterDto>();
+
          CreateProjection<Tuple<Meter, Device>, MeterDto>()
             .ForMember(dst => dst.DeviceId, opt => opt.MapFrom(src => src.Item1.DeviceId))
             .ForMember(dst => dst.Date, opt => opt.MapFrom(src => src.Item1.Date))

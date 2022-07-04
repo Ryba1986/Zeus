@@ -58,12 +58,12 @@ namespace Zeus.Infrastructure.Plc
                return;
             }
 
-            MeterReportDto beforePlc = await GetBeforeDataAsync(uow.Meter.AsQueryable(), date, device, reportProcessor, mapper, cancellationToken);
+            MeterDto beforePlc = await GetBeforeDataAsync(uow.Meter.AsQueryable(), date, device, reportProcessor, mapper, cancellationToken);
             startColumn += FillSheet(sheet, device, beforePlc, currentPlcData, startColumn, reportProcessor);
          }
       }
 
-      private static int FillSheet(ExcelWorksheet sheet, DeviceReportDto device, MeterReportDto beforeMeter, IReadOnlyCollection<MeterReportDto> currentData, int startColumn, IReportProcessor reportProcessor)
+      private static int FillSheet(ExcelWorksheet sheet, DeviceReportDto device, MeterDto beforeMeter, IReadOnlyCollection<MeterReportDto> currentData, int startColumn, IReportProcessor reportProcessor)
       {
          float beforeVolumeSummary = beforeMeter.VolumeSummary;
          float beforeEnergySummary = beforeMeter.EnergySummary;
@@ -123,20 +123,20 @@ namespace Zeus.Infrastructure.Plc
          return summaryColIndex;
       }
 
-      private static async Task<MeterReportDto> GetBeforeDataAsync(IMongoQueryable<Meter> plc, DateOnly date, DeviceReportDto device, IReportProcessor reportProcessor, IMapper mapper, CancellationToken cancellationToken)
+      private static async Task<MeterDto> GetBeforeDataAsync(IMongoQueryable<Meter> plc, DateOnly date, DeviceReportDto device, IReportProcessor reportProcessor, IMapper mapper, CancellationToken cancellationToken)
       {
          DateRange range = reportProcessor.GetRange(date);
 
-         MeterReportDto? before = await plc
+         MeterDto? before = await plc
             .Where(x =>
                x.DeviceId == device.Id &&
                x.Date < range.Start
             )
             .OrderByDescending(x => x.Date)
-            .ProjectTo<MeterReportDto>(mapper)
+            .ProjectTo<MeterDto>(mapper)
             .FirstOrDefaultAsync(cancellationToken);
 
-         if (before != null)
+         if (before is not null)
          {
             return before;
          }
@@ -147,7 +147,7 @@ namespace Zeus.Infrastructure.Plc
                x.Date < range.End
             )
             .OrderBy(x => x.Date)
-            .ProjectTo<MeterReportDto>(mapper)
+            .ProjectTo<MeterDto>(mapper)
             .FirstAsync(cancellationToken);
 
          return before;

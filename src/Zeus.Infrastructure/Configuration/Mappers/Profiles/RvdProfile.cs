@@ -10,6 +10,8 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
    {
       public RvdProfile()
       {
+         CreateProjection<Rvd145, Rvd145Dto>();
+
          CreateProjection<Tuple<Rvd145, Device>, Rvd145Dto>()
             .ForMember(dst => dst.DeviceId, opt => opt.MapFrom(src => src.Item1.DeviceId))
             .ForMember(dst => dst.Date, opt => opt.MapFrom(src => src.Item1.Date))
