@@ -4,6 +4,8 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Locations;
+using Zeus.Domain.Plcs.Meters;
+using Zeus.Domain.Plcs.Rvds;
 using Zeus.Domain.Users;
 using Zeus.Enums.Users;
 using Zeus.Utilities.Extensions;
@@ -20,14 +22,20 @@ namespace Zeus.Infrastructure.Repositories.Configurations
 
       private static async Task CreateIndexesAsync(IMongoDatabase database)
       {
-         await CreateLocationIndexesAsync(database);
-         await CreateLocationHistoryIndexesAsync(database);
+         await Task.WhenAll(new Task[]
+         {
+            CreateLocationIndexesAsync(database),
+            CreateLocationHistoryIndexesAsync(database),
 
-         await CreateDeviceIndexesAsync(database);
-         await CreateDeviceHistoryIndexesAsync(database);
+            CreateDeviceIndexesAsync(database),
+            CreateDeviceHistoryIndexesAsync(database),
 
-         await CreateUserIndexesAsync(database);
-         await CreateUserHistoryIndexesAsync(database);
+            CreateUserIndexesAsync(database),
+            CreateUserHistoryIndexesAsync(database),
+
+            CreateMeterIndexesAsync(database),
+            CreateRvd145IndexesAsync(database),
+         });
       }
 
       private static Task CreateLocationIndexesAsync(IMongoDatabase database)
@@ -120,9 +128,37 @@ namespace Zeus.Infrastructure.Repositories.Configurations
          return CreateIndexesAsync(list, database);
       }
 
-      private static async Task CreateDataAsync(IMongoDatabase database)
+      private static Task CreateMeterIndexesAsync(IMongoDatabase database)
       {
-         await CreateUserDataAsync(database);
+         List<CreateIndexModel<Meter>> list = new()
+         {
+            new CreateIndexModel<Meter>(Builders<Meter>.IndexKeys.Combine(
+               Builders<Meter>.IndexKeys.Ascending(x => x.DeviceId),
+               Builders<Meter>.IndexKeys.Ascending(x => x.Date)
+            ),
+            new CreateIndexOptions { Name = $"{nameof(Meter.DeviceId)}-{nameof(Meter.Date)}", Unique = true, Background = true })
+         };
+
+         return CreateIndexesAsync(list, database);
+      }
+
+      private static Task CreateRvd145IndexesAsync(IMongoDatabase database)
+      {
+         List<CreateIndexModel<Rvd145>> list = new()
+         {
+            new CreateIndexModel<Rvd145>(Builders<Rvd145>.IndexKeys.Combine(
+               Builders<Rvd145>.IndexKeys.Ascending(x => x.DeviceId),
+               Builders<Rvd145>.IndexKeys.Ascending(x => x.Date)
+            ),
+            new CreateIndexOptions { Name = $"{nameof(Rvd145.DeviceId)}-{nameof(Rvd145.Date)}", Unique = true, Background = true })
+         };
+
+         return CreateIndexesAsync(list, database);
+      }
+
+      private static Task CreateDataAsync(IMongoDatabase database)
+      {
+         return CreateUserDataAsync(database);
       }
 
       private static async Task CreateUserDataAsync(IMongoDatabase database)
@@ -152,6 +188,5 @@ namespace Zeus.Infrastructure.Repositories.Configurations
          IMongoCollection<T> collection = database.GetCollection<T>(typeof(T).Name);
          return collection.Indexes.CreateManyAsync(indexModel);
       }
-
    }
 }
