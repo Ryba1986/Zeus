@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Zeus.Domain.Devices;
 using Zeus.Domain.Locations;
 using Zeus.Domain.Users;
 using Zeus.Enums.Users;
@@ -21,6 +22,9 @@ namespace Zeus.Infrastructure.Repositories.Configurations
       {
          await CreateLocationIndexesAsync(database);
          await CreateLocationHistoryIndexesAsync(database);
+
+         await CreateDeviceIndexesAsync(database);
+         await CreateDeviceHistoryIndexesAsync(database);
 
          await CreateUserIndexesAsync(database);
          await CreateUserHistoryIndexesAsync(database);
@@ -51,6 +55,40 @@ namespace Zeus.Infrastructure.Repositories.Configurations
                Builders<LocationHistory>.IndexKeys.Ascending(x => x.CreateDate)
             ),
             new CreateIndexOptions { Name = $"{nameof(LocationHistory.LocationId)}-{nameof(LocationHistory.CreateDate)}", Unique = true, Background = true })
+         };
+
+         return CreateIndexesAsync(list, database);
+      }
+
+      private static Task CreateDeviceIndexesAsync(IMongoDatabase database)
+      {
+         List<CreateIndexModel<Device>> list = new()
+         {
+            new CreateIndexModel<Device>(Builders<Device>.IndexKeys.Combine(
+               Builders<Device>.IndexKeys.Ascending(x => x.LocationId),
+               Builders<Device>.IndexKeys.Ascending(x => x.ModbusId)
+            ),
+            new CreateIndexOptions { Name = $"{nameof(Device.LocationId)}-{nameof(Device.ModbusId)}", Unique = true, Background = true }),
+
+            new CreateIndexModel<Device>(Builders<Device>.IndexKeys.Combine(
+               Builders<Device>.IndexKeys.Ascending(x => x.LocationId),
+               Builders<Device>.IndexKeys.Ascending(x => x.Name)
+            ),
+            new CreateIndexOptions { Name = $"{nameof(Device.LocationId)}-{nameof(Device.Name)}", Unique = true, Background = true })
+         };
+
+         return CreateIndexesAsync(list, database);
+      }
+
+      private static Task CreateDeviceHistoryIndexesAsync(IMongoDatabase database)
+      {
+         List<CreateIndexModel<DeviceHistory>> list = new()
+         {
+            new CreateIndexModel<DeviceHistory>(Builders<DeviceHistory>.IndexKeys.Combine(
+               Builders<DeviceHistory>.IndexKeys.Ascending(x => x.DeviceId),
+               Builders<DeviceHistory>.IndexKeys.Ascending(x => x.CreateDate)
+            ),
+            new CreateIndexOptions { Name = $"{nameof(DeviceHistory.DeviceId)}-{nameof(DeviceHistory.CreateDate)}", Unique = true, Background = true })
          };
 
          return CreateIndexesAsync(list, database);
