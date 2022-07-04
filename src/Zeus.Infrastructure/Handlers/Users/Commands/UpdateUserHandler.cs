@@ -82,7 +82,7 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
          return await _uow.ExecuteTransactionAsync(
             async (session, token) =>
             {
-               await CreateHistory(session, existingUser, request, modifiedBy, token);
+               await CreateHistoryAsync(session, existingUser, request, modifiedBy, token);
 
                existingUser.Update(request.Name, request.Email, request.Role, request.IsActive);
                await _uow.User.ReplaceOneAsync(session, x => x.Id == existingUser.Id, existingUser, cancellationToken: token);
@@ -91,7 +91,7 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
          );
       }
 
-      private async Task CreateHistory(IClientSessionHandle session, User user, UpdateUserCommand request, User createdBy, CancellationToken cancellationToken)
+      private async Task CreateHistoryAsync(IClientSessionHandle session, User user, UpdateUserCommand request, User createdBy, CancellationToken cancellationToken)
       {
          if (
                user.Name == request.Name &&

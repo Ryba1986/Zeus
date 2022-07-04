@@ -75,7 +75,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
          return await _uow.ExecuteTransactionAsync(
             async (session, token) =>
             {
-               await CreateHistory(session, existingLocation, request, modifiedBy, token);
+               await CreateHistoryAsync(session, existingLocation, request, modifiedBy, token);
 
                existingLocation.Update(request.Name, request.MacAddress, request.IncludeReport, request.IsActive);
                await _uow.Location.ReplaceOneAsync(session, x => x.Id == existingLocation.Id, existingLocation, cancellationToken: token);
@@ -84,7 +84,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
          );
       }
 
-      private async Task CreateHistory(IClientSessionHandle session, Location location, UpdateLocationCommand request, User createdBy, CancellationToken cancellationToken)
+      private async Task CreateHistoryAsync(IClientSessionHandle session, Location location, UpdateLocationCommand request, User createdBy, CancellationToken cancellationToken)
       {
          if (
                location.Name == request.Name &&
