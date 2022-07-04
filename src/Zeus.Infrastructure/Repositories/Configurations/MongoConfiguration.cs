@@ -19,14 +19,14 @@ namespace Zeus.Infrastructure.Repositories.Configurations
 
       private static async Task CreateIndexesAsync(IMongoDatabase database)
       {
-         await LocationIndexesAsync(database);
-         await LocationHistoryIndexesAsync(database);
+         await CreateLocationIndexesAsync(database);
+         await CreateLocationHistoryIndexesAsync(database);
 
          await CreateUserIndexesAsync(database);
          await CreateUserHistoryIndexesAsync(database);
       }
 
-      private static Task LocationIndexesAsync(IMongoDatabase database)
+      private static Task CreateLocationIndexesAsync(IMongoDatabase database)
       {
          List<CreateIndexModel<Location>> list = new()
          {
@@ -42,7 +42,7 @@ namespace Zeus.Infrastructure.Repositories.Configurations
          return CreateIndexesAsync(list, database);
       }
 
-      private static Task LocationHistoryIndexesAsync(IMongoDatabase database)
+      private static Task CreateLocationHistoryIndexesAsync(IMongoDatabase database)
       {
          List<CreateIndexModel<LocationHistory>> list = new()
          {
