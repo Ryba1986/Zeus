@@ -11,7 +11,12 @@ namespace Zeus.Models.Plcs.Meters.Commands
       public int VolumeSummary { get; init; }
       public int EnergySummary { get; init; }
       public int HourCount { get; init; }
-      public int SerialNumber { get; init; }
+      public string SerialNumber { get; init; }
       public short ErrorCode { get; init; }
+
+      public CreateMeterCommand()
+      {
+         SerialNumber = string.Empty;
+      }
    }
 }
