@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Zeus.Api.Web.Attributes;
 using Zeus.Enums.Users;
 using Zeus.Models.Base;
+using Zeus.Models.Reports.Dto;
 using Zeus.Utilities.Extensions;
 
 namespace Zeus.Api.Web.Controllers
@@ -21,6 +22,12 @@ namespace Zeus.Api.Web.Controllers
       protected async Task<IActionResult> SendAsync<T>(IRequest<T> request) where T : class
       {
          return Ok(await _mediator.Send(request));
+      }
+
+      protected async Task<IActionResult> SendAsync(IRequest<ReportFileDto> request)
+      {
+         ReportFileDto result = await _mediator.Send(request);
+         return File(result.Content, result.Type, result.Name);
       }
 
       protected async Task<IActionResult> SendAsync(IRequest<Result> request)
