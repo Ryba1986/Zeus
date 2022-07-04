@@ -10,9 +10,9 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
    {
       public LocationProfile()
       {
-         CreateMap<Location, LocationDto>();
+         CreateProjection<Location, LocationDto>();
 
-         CreateMap<Tuple<LocationHistory, User>, LocationHistoryDto>()
+         CreateProjection<Tuple<LocationHistory, User>, LocationHistoryDto>()
             .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Item1.Name))
             .ForMember(dst => dst.MacAddress, opt => opt.MapFrom(src => src.Item1.MacAddress))
             .ForMember(dst => dst.IncludeReport, opt => opt.MapFrom(src => src.Item1.IncludeReport))
@@ -20,7 +20,7 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
             .ForMember(dst => dst.CreatedByName, opt => opt.MapFrom(src => src.Item2.Name))
             .ForMember(dst => dst.CreateDate, opt => opt.MapFrom(src => src.Item1.CreateDate));
 
-         CreateMap<Location, LocationReportDto>();
+         CreateProjection<Location, LocationReportDto>();
       }
    }
 }

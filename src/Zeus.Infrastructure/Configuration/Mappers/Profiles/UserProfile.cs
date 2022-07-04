@@ -9,9 +9,9 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
    {
       public UserProfile()
       {
-         CreateMap<User, UserDto>();
+         CreateProjection<User, UserDto>();
 
-         CreateMap<Tuple<UserHistory, User>, UserHistoryDto>()
+         CreateProjection<Tuple<UserHistory, User>, UserHistoryDto>()
             .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Item1.Name))
             .ForMember(dst => dst.Email, opt => opt.MapFrom(src => src.Item1.Email))
             .ForMember(dst => dst.Role, opt => opt.MapFrom(src => src.Item1.Role))

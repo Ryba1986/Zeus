@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Plcs.Rvds;
@@ -12,7 +10,7 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
    {
       public RvdProfile()
       {
-         CreateMap<Tuple<Rvd145, Device>, Rvd145Dto>()
+         CreateProjection<Tuple<Rvd145, Device>, Rvd145Dto>()
             .ForMember(dst => dst.DeviceId, opt => opt.MapFrom(src => src.Item1.DeviceId))
             .ForMember(dst => dst.Date, opt => opt.MapFrom(src => src.Item1.Date))
             .ForMember(dst => dst.CoHighInletPresure, opt => opt.MapFrom(src => src.Item1.CoHighInletPresure))
@@ -31,7 +29,7 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
             .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Item2.Name))
             .ForMember(dst => dst.IsDelayed, opt => opt.Ignore());
 
-         CreateMap<Rvd145, Rvd145ChartDto>();
+         CreateProjection<Rvd145, Rvd145ChartDto>();
       }
    }
 }

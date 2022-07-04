@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Plcs.Meters;
@@ -12,7 +10,7 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
    {
       public MeterProfile()
       {
-         CreateMap<Tuple<Meter, Device>, MeterDto>()
+         CreateProjection<Tuple<Meter, Device>, MeterDto>()
             .ForMember(dst => dst.DeviceId, opt => opt.MapFrom(src => src.Item1.DeviceId))
             .ForMember(dst => dst.Date, opt => opt.MapFrom(src => src.Item1.Date))
             .ForMember(dst => dst.InletTemp, opt => opt.MapFrom(src => src.Item1.InletTemp))
@@ -24,7 +22,7 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
             .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Item2.Name))
             .ForMember(dst => dst.IsDelayed, opt => opt.Ignore());
 
-         CreateMap<Meter, MeterChartDto>();
+         CreateProjection<Meter, MeterChartDto>();
       }
    }
 }
