@@ -13,12 +13,12 @@ namespace Zeus.Infrastructure.Configuration.Mappers.Profiles
          CreateMap<Location, LocationDto>();
 
          CreateMap<Tuple<LocationHistory, User>, LocationHistoryDto>()
-            .ForMember(dst => dst.Name, src => src.MapFrom((s, d) => s.Item1.Name))
-            .ForMember(dst => dst.MacAddress, src => src.MapFrom((s, d) => s.Item1.MacAddress))
-            .ForMember(dst => dst.IncludeReport, src => src.MapFrom((s, d) => s.Item1.IncludeReport))
-            .ForMember(dst => dst.IsActive, src => src.MapFrom((s, d) => s.Item1.IsActive))
-            .ForMember(dst => dst.CreatedByName, src => src.MapFrom((s, d) => s.Item2.Name))
-            .ForMember(dst => dst.CreateDate, src => src.MapFrom((s, d) => s.Item1.CreateDate));
+            .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Item1.Name))
+            .ForMember(dst => dst.MacAddress, opt => opt.MapFrom(src => src.Item1.MacAddress))
+            .ForMember(dst => dst.IncludeReport, opt => opt.MapFrom(src => src.Item1.IncludeReport))
+            .ForMember(dst => dst.IsActive, opt => opt.MapFrom(src => src.Item1.IsActive))
+            .ForMember(dst => dst.CreatedByName, opt => opt.MapFrom(src => src.Item2.Name))
+            .ForMember(dst => dst.CreateDate, opt => opt.MapFrom(src => src.Item1.CreateDate));
 
          CreateMap<Location, LocationReportDto>();
       }
