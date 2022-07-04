@@ -59,7 +59,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
                x.Id == request.Id
             , cancellationToken);
 
-         if (existingLocation == null)
+         if (existingLocation is null)
          {
             return Result.Error("Location not exist.");
          }
