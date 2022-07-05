@@ -2,50 +2,50 @@ using System;
 using System.Linq.Expressions;
 using Zeus.Domain.Base;
 using Zeus.Enums.Reports;
-using Zeus.Infrastructure.Reports.Base;
+using Zeus.Infrastructure.Reports.Types.Base;
 using Zeus.Models.Utilities;
 
-namespace Zeus.Infrastructure.Reports
+namespace Zeus.Infrastructure.Reports.Types
 {
-   internal sealed class DayReportProcessor : BaseReportProcessor, IReportProcessor
+   internal sealed class YearReportProcessor : BaseReportProcessor, IReportProcessor
    {
       public ReportType ReportType { get; init; }
       public short SummaryRowOffset { get; init; }
 
-      public DayReportProcessor()
+      public YearReportProcessor()
       {
-         ReportType = ReportType.Day;
-         SummaryRowOffset = 24;
+         ReportType = ReportType.Year;
+         SummaryRowOffset = 12;
       }
 
       public int GetDatePart(DateTime date)
       {
-         return date.Hour;
+         return date.Month - 1;
       }
 
       public string GetFileName(DateOnly date)
       {
-         return $"Report_{date:yyyy-MM-dd}.xlsx";
+         return $"Report_{date:yyyy}.xlsx";
       }
 
       public string GetHeader(string value, string locationName, DateOnly date)
       {
-         return GetHeader(value, locationName, date, "yyyy-MM-dd");
+         return GetHeader(value, locationName, date, "yyyy");
       }
 
       public Expression<Func<T, int>> GetPlcGroup<T>() where T : BasePlc
       {
-         return x => x.Date.Hour;
+         return x => x.Date.Month;
       }
 
       public DateRange GetRange(DateOnly date)
       {
-         DateTime dateTime = date.ToDateTime(TimeOnly.MinValue);
+         DateTime dateTime = new(date.Year, 1, 1);
 
          return new()
          {
             Start = dateTime,
-            End = dateTime.AddDays(1)
+            End = dateTime.AddYears(1)
          };
       }
    }

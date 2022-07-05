@@ -4,7 +4,7 @@ using Zeus.Domain.Base;
 using Zeus.Enums.Reports;
 using Zeus.Models.Utilities;
 
-namespace Zeus.Infrastructure.Reports.Base
+namespace Zeus.Infrastructure.Reports.Types.Base
 {
    internal interface IReportProcessor
    {

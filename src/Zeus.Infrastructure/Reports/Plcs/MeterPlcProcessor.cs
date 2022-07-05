@@ -10,15 +10,15 @@ using MongoDB.Driver.Linq;
 using OfficeOpenXml;
 using Zeus.Domain.Plcs.Meters;
 using Zeus.Infrastructure.Mongo;
-using Zeus.Infrastructure.Plc.Base;
-using Zeus.Infrastructure.Reports.Base;
+using Zeus.Infrastructure.Reports.Plcs.Base;
+using Zeus.Infrastructure.Reports.Types.Base;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Devices.Dto;
 using Zeus.Models.Plcs.Meters.Dto;
 using Zeus.Models.Utilities;
 using Zeus.Utilities.Extensions;
 
-namespace Zeus.Infrastructure.Plc
+namespace Zeus.Infrastructure.Reports.Plcs
 {
    internal sealed class MeterPlcProcessor : BasePlcProcessor, IPlcProcessor
    {

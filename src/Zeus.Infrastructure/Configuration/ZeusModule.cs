@@ -30,7 +30,6 @@ namespace Zeus.Infrastructure.Configuration
       private void RegisterModules(ContainerBuilder builder)
       {
          builder.RegisterModule<MongoModule>();
-         builder.RegisterModule<PlcModule>();
          builder.RegisterModule<ReportModule>();
          builder.RegisterModule<MediatorModule>();
          builder.RegisterModule(new SettingsModule(_configuration));

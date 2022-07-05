@@ -8,14 +8,14 @@ using AutoMapper;
 using MongoDB.Driver;
 using OfficeOpenXml;
 using Zeus.Domain.Plcs.Rvds;
-using Zeus.Infrastructure.Plc.Base;
-using Zeus.Infrastructure.Reports.Base;
+using Zeus.Infrastructure.Reports.Plcs.Base;
+using Zeus.Infrastructure.Reports.Types.Base;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Devices.Dto;
 using Zeus.Models.Plcs.Rvds.Dto;
 using Zeus.Utilities.Extensions;
 
-namespace Zeus.Infrastructure.Plc
+namespace Zeus.Infrastructure.Reports.Plcs
 {
    internal sealed class Rvd145PlcProcessor : BasePlcProcessor, IPlcProcessor
    {

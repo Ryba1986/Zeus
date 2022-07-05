@@ -1,7 +1,7 @@
 using System;
 using Zeus.Models.Utilities;
 
-namespace Zeus.Infrastructure.Reports.Base
+namespace Zeus.Infrastructure.Reports.Types.Base
 {
    internal abstract class BaseReportProcessor
    {

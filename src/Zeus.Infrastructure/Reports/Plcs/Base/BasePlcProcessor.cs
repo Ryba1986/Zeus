@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Zeus.Domain.Base;
-using Zeus.Infrastructure.Reports.Base;
+using Zeus.Infrastructure.Reports.Types.Base;
 using Zeus.Models.Base.Dto;
 using Zeus.Models.Devices.Dto;
 using Zeus.Models.Utilities;
 
-namespace Zeus.Infrastructure.Plc.Base
+namespace Zeus.Infrastructure.Reports.Plcs.Base
 {
    internal abstract class BasePlcProcessor
    {
