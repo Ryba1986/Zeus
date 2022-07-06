@@ -21,7 +21,7 @@ namespace Zeus.Infrastructure.Configuration.Modules
             .SingleInstance();
 
          builder
-            .RegisterInstance(_configuration.GetSettings<MongoSettings>())
+            .RegisterInstance(_configuration.GetSettings<SqlSettings>())
             .SingleInstance();
 
          builder
