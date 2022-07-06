@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Locations;
 using Zeus.Domain.Users;
 using Zeus.Infrastructure.Handlers.Base;
@@ -26,7 +25,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
       public async Task<Result> Handle(CreateLocationCommand request, CancellationToken cancellationToken)
       {
          User? createdBy = await _uow.User
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Id == request.CreatedById &&
                x.IsActive
@@ -38,7 +37,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
          }
 
          Location? existingLocation = await _uow.Location
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Name == request.Name || x.MacAddress == request.MacAddress
             , cancellationToken);
@@ -59,10 +58,13 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
          Location newLocation = new(request.Name, request.MacAddress, request.IncludeReport, request.IsActive);
 
          return await _uow.ExecuteTransactionAsync(
-            async (session, token) =>
+            async token =>
             {
-               await _uow.Location.InsertOneAsync(session, newLocation, cancellationToken: token);
-               await _uow.LocationHistory.InsertOneAsync(session, new(newLocation.Id, newLocation.Name, newLocation.MacAddress, newLocation.IncludeReport, newLocation.IsActive, createdBy.Id), cancellationToken: token);
+               _uow.Location.Add(newLocation);
+               await _uow.SaveChangesAsync(token);
+
+               _uow.LocationHistory.Add(new(newLocation.Id, newLocation.Name, newLocation.MacAddress, newLocation.IncludeReport, newLocation.IsActive, createdBy.Id));
+               await _uow.SaveChangesAsync(token);
             },
             cancellationToken
          );

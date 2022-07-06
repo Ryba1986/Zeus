@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Locations;
 using Zeus.Infrastructure.Handlers.Base;
 using Zeus.Infrastructure.Helpers;
@@ -25,7 +24,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Queries
       public async Task<Result> Handle(GetLocationTokenRefreshQuery request, CancellationToken cancellationToken)
       {
          Location? existingLocation = await _uow.Location
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Id == request.LocationId &&
                x.IsActive

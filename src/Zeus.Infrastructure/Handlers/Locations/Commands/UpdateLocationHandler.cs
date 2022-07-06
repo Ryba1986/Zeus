@@ -1,8 +1,8 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Locations;
 using Zeus.Domain.Users;
 using Zeus.Infrastructure.Handlers.Base;
@@ -26,7 +26,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
       public async Task<Result> Handle(UpdateLocationCommand request, CancellationToken cancellationToken)
       {
          User? modifiedBy = await _uow.User
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Id == request.ModifiedById &&
                x.IsActive
@@ -38,7 +38,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
          }
 
          Location? otherLocation = await _uow.Location
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                (x.Name == request.Name || x.MacAddress == request.MacAddress) &&
                x.Id != request.Id
@@ -54,7 +54,6 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
          }
 
          Location? existingLocation = await _uow.Location
-            .AsQueryable()
             .FirstOrDefaultAsync(x =>
                x.Id == request.Id
             , cancellationToken);
@@ -63,7 +62,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
          {
             return Result.Error("Location not exist.");
          }
-         if (existingLocation.Version != request.Version)
+         if (!existingLocation.Version.SequenceEqual(request.Version))
          {
             return Result.Error("Location has been changed.");
          }
@@ -72,42 +71,34 @@ namespace Zeus.Infrastructure.Handlers.Locations.Commands
             return Result.Error("The limit of active locations has been exceeded.");
          }
 
-         return await _uow.ExecuteTransactionAsync(
-            async (session, token) =>
-            {
-               await CreateHistoryAsync(session, existingLocation, request, modifiedBy, token);
+         CreateHistory(existingLocation, request, modifiedBy);
+         existingLocation.Update(request.Name, request.MacAddress, request.IncludeReport, request.IsActive);
 
-               existingLocation.Update(request.Name, request.MacAddress, request.IncludeReport, request.IsActive);
-               await _uow.Location.ReplaceOneAsync(session, x => x.Id == existingLocation.Id, existingLocation, cancellationToken: token);
-            },
-            cancellationToken
-         );
+         await _uow.SaveChangesAsync(cancellationToken);
+         return Result.Success();
       }
 
-      private async Task CreateHistoryAsync(IClientSessionHandle session, Location location, UpdateLocationCommand request, User createdBy, CancellationToken cancellationToken)
+      private void CreateHistory(Location location, UpdateLocationCommand request, User createdBy)
       {
-         if (
-               location.Name == request.Name &&
-               location.MacAddress == request.MacAddress &&
-               location.IsActive == request.IsActive &&
-               location.IncludeReport == request.IncludeReport
-            )
+         if
+         (
+            location.Name == request.Name &&
+            location.MacAddress == request.MacAddress &&
+            location.IsActive == request.IsActive &&
+            location.IncludeReport == request.IncludeReport
+         )
          {
             return;
          }
 
-         await _uow.LocationHistory.InsertOneAsync(
-            session,
-            new(
-               location.Id,
-               location.Name != request.Name ? request.Name : string.Empty,
-               location.MacAddress != request.MacAddress ? request.MacAddress : string.Empty,
-               request.IncludeReport,
-               request.IsActive,
-               createdBy.Id
-            ),
-            cancellationToken: cancellationToken
-         );
+         _uow.LocationHistory.Add(new(
+            location.Id,
+            location.Name != request.Name ? request.Name : string.Empty,
+            location.MacAddress != request.MacAddress ? request.MacAddress : string.Empty,
+            request.IncludeReport,
+            request.IsActive,
+            createdBy.Id
+        ));
       }
    }
 }

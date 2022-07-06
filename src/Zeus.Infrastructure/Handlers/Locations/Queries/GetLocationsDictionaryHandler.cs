@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Infrastructure.Handlers.Base;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Locations.Queries;
@@ -19,10 +19,10 @@ namespace Zeus.Infrastructure.Handlers.Locations.Queries
       public async Task<IEnumerable<KeyValuePair<int, string>>> Handle(GetLocationsDictionaryQuery request, CancellationToken cancellationToken)
       {
          return await _uow.Location
-            .AsQueryable()
+            .AsNoTracking()
             .OrderBy(x => x.Name)
             .Select(x => new KeyValuePair<int, string>(x.Id, x.Name))
-            .ToListAsync(cancellationToken);
+            .ToArrayAsync(cancellationToken);
       }
    }
 }

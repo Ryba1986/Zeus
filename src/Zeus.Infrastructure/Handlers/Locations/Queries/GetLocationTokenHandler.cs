@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Locations;
 using Zeus.Infrastructure.Handlers.Base;
 using Zeus.Infrastructure.Helpers;
@@ -25,7 +24,6 @@ namespace Zeus.Infrastructure.Handlers.Locations.Queries
       public async Task<Result> Handle(GetLocationTokenQuery request, CancellationToken cancellationToken)
       {
          Location? existingLocation = await _uow.Location
-            .AsQueryable()
             .FirstOrDefaultAsync(x =>
                x.MacAddress == request.MacAddress &&
                x.IsActive
@@ -45,7 +43,7 @@ namespace Zeus.Infrastructure.Handlers.Locations.Queries
          if (clientInfoChanged)
          {
             existingLocation.Update(request.Hostname, request.ClientVersion);
-            await _uow.Location.ReplaceOneAsync(x => x.Id == existingLocation.Id, existingLocation, cancellationToken: cancellationToken);
+            await _uow.SaveChangesAsync(cancellationToken);
          }
 
          return JwtHandlerHelper.CreateClient(existingLocation.Id, _settings);
