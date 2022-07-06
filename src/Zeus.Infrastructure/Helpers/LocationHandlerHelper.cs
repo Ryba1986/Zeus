@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Infrastructure.Repositories;
 
 namespace Zeus.Infrastructure.Helpers
@@ -11,7 +10,7 @@ namespace Zeus.Infrastructure.Helpers
       public static async Task<bool> IsLimitLocations(UnitOfWork uow, int locationLimit, CancellationToken cancellationToken)
       {
          int result = await uow.Location
-            .AsQueryable()
+            .AsNoTracking()
             .CountAsync(x =>
                x.IsActive
             , cancellationToken);

@@ -19,7 +19,7 @@ namespace Zeus.Api.Web.Controllers
          _mediator = mediator;
       }
 
-      protected async Task<IActionResult> SendAsync<T>(IRequest<T> request) where T : class
+      protected async Task<IActionResult> SendAsync<T>(IRequest<T?> request) where T : class
       {
          return Ok(await _mediator.Send(request));
       }
