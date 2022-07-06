@@ -20,18 +20,18 @@ namespace Zeus.Infrastructure.Configuration
          RegisterModules(builder);
       }
 
-      private void RegisterMappers(ContainerBuilder builder)
+      private static void RegisterMappers(ContainerBuilder builder)
       {
          builder
-            .RegisterInstance(AutoMapperConfig.Initialize(ThisAssembly))
+            .RegisterInstance(MapsterConfig.Initialize())
             .SingleInstance();
       }
 
       private void RegisterModules(ContainerBuilder builder)
       {
-         builder.RegisterModule<MongoModule>();
-         builder.RegisterModule<ReportModule>();
+         builder.RegisterModule<RepositoryModule>();
          builder.RegisterModule<MediatorModule>();
+         builder.RegisterModule<ReportModule>();
          builder.RegisterModule(new SettingsModule(_configuration));
       }
    }

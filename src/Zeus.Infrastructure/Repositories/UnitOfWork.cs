@@ -1,65 +1,44 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MongoDB.Driver;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Locations;
 using Zeus.Domain.Plcs.Meters;
 using Zeus.Domain.Plcs.Rvds;
 using Zeus.Domain.Users;
-using Zeus.Models.Base;
 
 namespace Zeus.Infrastructure.Repositories
 {
-   internal sealed class UnitOfWork
+   internal sealed class UnitOfWork : DbContext
    {
-      public IMongoCollection<Location> Location { get; init; }
-      public IMongoCollection<LocationHistory> LocationHistory { get; init; }
+      public DbSet<Location> Location { get; init; }
+      public DbSet<LocationHistory> LocationHistory { get; init; }
 
-      public IMongoCollection<Device> Device { get; init; }
-      public IMongoCollection<DeviceHistory> DeviceHistory { get; init; }
+      public DbSet<Device> Device { get; init; }
+      public DbSet<DeviceHistory> DeviceHistory { get; init; }
 
-      public IMongoCollection<User> User { get; init; }
-      public IMongoCollection<UserHistory> UserHistory { get; init; }
+      public DbSet<User> User { get; init; }
+      public DbSet<UserHistory> UserHistory { get; init; }
 
-      public IMongoCollection<Meter> Meter { get; init; }
-      public IMongoCollection<Rvd145> Rvd145 { get; init; }
+      public DbSet<Meter> Meter { get; init; }
+      public DbSet<Rvd145> Rvd145 { get; init; }
 
-      private readonly IMongoDatabase _database;
-
-      public UnitOfWork(IMongoDatabase database)
+      public UnitOfWork(DbContextOptions<UnitOfWork> options) : base(options)
       {
-         _database = database;
+         Location = Set<Location>();
+         LocationHistory = Set<LocationHistory>();
 
-         Location = _database.GetCollection<Location>(nameof(Location));
-         LocationHistory = _database.GetCollection<LocationHistory>(nameof(LocationHistory));
+         Device = Set<Device>();
+         DeviceHistory = Set<DeviceHistory>();
 
-         Device = _database.GetCollection<Device>(nameof(Device));
-         DeviceHistory = _database.GetCollection<DeviceHistory>(nameof(DeviceHistory));
+         User = Set<User>();
+         UserHistory = Set<UserHistory>();
 
-         User = _database.GetCollection<User>(nameof(User));
-         UserHistory = _database.GetCollection<UserHistory>(nameof(UserHistory));
-
-         Meter = _database.GetCollection<Meter>(nameof(Meter));
-         Rvd145 = _database.GetCollection<Rvd145>(nameof(Rvd145));
+         Meter = Set<Meter>();
+         Rvd145 = Set<Rvd145>();
       }
 
-      public async Task<Result> ExecuteTransactionAsync(Func<IClientSessionHandle, CancellationToken, Task> action, CancellationToken cancellationToken)
+      protected override void OnModelCreating(ModelBuilder modelBuilder)
       {
-         using IClientSessionHandle session = await _database.Client.StartSessionAsync(cancellationToken: cancellationToken);
-         try
-         {
-            session.StartTransaction();
-            await action(session, cancellationToken);
-            await session.CommitTransactionAsync(cancellationToken);
-
-            return Result.Success();
-         }
-         catch (Exception ex)
-         {
-            await session.AbortTransactionAsync(cancellationToken);
-            return Result.Error($"Transaction error: {ex.Message}");
-         }
+         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
       }
    }
 }
