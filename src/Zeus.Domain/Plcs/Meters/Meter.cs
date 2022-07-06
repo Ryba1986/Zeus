@@ -15,7 +15,7 @@ namespace Zeus.Domain.Plcs.Meters
       public int HourCount { get; init; }
       public short ErrorCode { get; init; }
 
-      public Meter(float inletTemp, float outletTemp, float power, float volume, int volumeSummary, int energySummary, int hourCount, short errorCode, int deviceId, DateTime date) : base(deviceId, date)
+      public Meter(float inletTemp, float outletTemp, float power, float volume, int volumeSummary, int energySummary, int hourCount, short errorCode, DateTime date, int deviceId) : base(date, deviceId)
       {
          InletTemp = inletTemp.Round();
          OutletTemp = outletTemp.Round();

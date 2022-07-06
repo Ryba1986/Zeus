@@ -1,4 +1,4 @@
-using Zeus.Utilities.Helpers;
+using System;
 
 namespace Zeus.Domain.Base
 {
@@ -6,12 +6,11 @@ namespace Zeus.Domain.Base
    {
       public int Id { get; init; }
       public bool IsActive { get; protected set; }
-      public short Version { get; protected set; }
+      public byte[] Version { get; init; }
 
       public BaseDomain(bool isActive)
       {
-         Id = RandomHelper.CreateInt();
-         Version = RandomHelper.CreateShort();
+         Version = Array.Empty<byte>();
 
          IsActive = isActive;
       }

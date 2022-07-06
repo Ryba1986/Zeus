@@ -1,7 +1,6 @@
 using Zeus.Domain.Base;
 using Zeus.Enums.Users;
 using Zeus.Utilities.Extensions;
-using Zeus.Utilities.Helpers;
 
 namespace Zeus.Domain.Users
 {
@@ -22,8 +21,6 @@ namespace Zeus.Domain.Users
 
       public void Update(string name, string email, UserRole role, bool isActive)
       {
-         Version = RandomHelper.CreateShort();
-
          Name = name;
          Email = email;
          Role = role;
@@ -32,8 +29,6 @@ namespace Zeus.Domain.Users
 
       public void Update(string newPassword)
       {
-         Version = RandomHelper.CreateShort();
-
          Password = newPassword.CreatePassword();
       }
    }

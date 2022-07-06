@@ -1,5 +1,4 @@
 using Zeus.Domain.Base;
-using Zeus.Utilities.Helpers;
 
 namespace Zeus.Domain.Locations
 {
@@ -23,8 +22,6 @@ namespace Zeus.Domain.Locations
 
       public void Update(string name, string macAddress, bool includeReport, bool isActive)
       {
-         Version = RandomHelper.CreateShort();
-
          Name = name;
          MacAddress = macAddress;
          IncludeReport = includeReport;
@@ -33,8 +30,6 @@ namespace Zeus.Domain.Locations
 
       public void Update(string hostname, string clientVersion)
       {
-         Version = RandomHelper.CreateShort();
-
          Hostname = hostname;
          ClientVersion = clientVersion;
       }

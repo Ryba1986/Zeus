@@ -23,7 +23,7 @@ namespace Zeus.Domain.Plcs.Rvds
       public bool CwuPumpStatus { get; init; }
       public bool CwuStatus { get; init; }
 
-      public Rvd145(float outsideTemp, float coHighInletPresure, short alarm, float coHighOutletTemp, float coLowInletTemp, float coLowOutletPresure, float coHeatCurveTemp, bool coPumpStatus, bool coStatus, float cwuTemp, float cwuTempSet, float cwuCirculationTemp, bool cwuPumpStatus, bool cwuStatus, int deviceId, DateTime date) : base(deviceId, date)
+      public Rvd145(float outsideTemp, float coHighInletPresure, short alarm, float coHighOutletTemp, float coLowInletTemp, float coLowOutletPresure, float coHeatCurveTemp, bool coPumpStatus, bool coStatus, float cwuTemp, float cwuTempSet, float cwuCirculationTemp, bool cwuPumpStatus, bool cwuStatus, DateTime date, int deviceId) : base(date, deviceId)
       {
          OutsideTemp = outsideTemp.Round();
          CoHighInletPresure = coHighInletPresure.Round();

@@ -1,6 +1,5 @@
 using System;
 using Zeus.Utilities.Extensions;
-using Zeus.Utilities.Helpers;
 
 namespace Zeus.Domain.Base
 {
@@ -13,7 +12,6 @@ namespace Zeus.Domain.Base
 
       public BaseHistory(bool isActive, int createdById)
       {
-         Id = RandomHelper.CreateInt();
          CreateDate = DateTime.Now.RoundToSecond();
 
          IsActive = isActive;

@@ -1,7 +1,6 @@
 using Zeus.Domain.Base;
 using Zeus.Enums.Devices;
 using Zeus.Enums.SerialPorts;
-using Zeus.Utilities.Helpers;
 
 namespace Zeus.Domain.Devices
 {
@@ -35,8 +34,6 @@ namespace Zeus.Domain.Devices
 
       public void Update(int locationId, string name, DeviceType type, byte modbusId, BoundRate rsBoundRate, DataBits rsDataBits, Parity rsParity, StopBits rsStopBits, bool includeReport, bool isActive)
       {
-         Version = RandomHelper.CreateShort();
-
          LocationId = locationId;
          Name = name;
          Type = type;
@@ -51,8 +48,6 @@ namespace Zeus.Domain.Devices
 
       public void Update(string serialNumber)
       {
-         Version = RandomHelper.CreateShort();
-
          SerialNumber = serialNumber;
       }
    }
