@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Locations;
 using Zeus.Domain.Users;
@@ -23,7 +22,7 @@ namespace Zeus.Infrastructure.Handlers.Devices.Commands
       public async Task<Result> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
       {
          User? createdBy = await _uow.User
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Id == request.CreatedById &&
                x.IsActive
@@ -35,7 +34,7 @@ namespace Zeus.Infrastructure.Handlers.Devices.Commands
          }
 
          Location? existingLocation = await _uow.Location
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Id == request.LocationId
             , cancellationToken);
@@ -46,7 +45,7 @@ namespace Zeus.Infrastructure.Handlers.Devices.Commands
          }
 
          Device? existingDevice = await _uow.Device
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.LocationId == request.LocationId &&
                (x.Name == request.Name || x.ModbusId == request.ModbusId)
@@ -64,10 +63,13 @@ namespace Zeus.Infrastructure.Handlers.Devices.Commands
          Device newDevice = new(existingLocation.Id, request.Name, request.Type, request.ModbusId, request.RsBoundRate, request.RsDataBits, request.RsParity, request.RsStopBits, request.IncludeReport, request.IsActive);
 
          return await _uow.ExecuteTransactionAsync(
-            async (session, token) =>
+            async token =>
             {
-               await _uow.Device.InsertOneAsync(session, newDevice, cancellationToken: token);
-               await _uow.DeviceHistory.InsertOneAsync(session, new(newDevice.Id, newDevice.Name, existingLocation.Name, newDevice.Type.GetDescription(), newDevice.ModbusId.ToString(), newDevice.RsBoundRate.GetDescription(), newDevice.RsDataBits.GetDescription(), newDevice.RsParity.GetDescription(), newDevice.RsStopBits.GetDescription(), newDevice.IncludeReport, newDevice.IsActive, createdBy.Id), cancellationToken: token);
+               _uow.Device.Add(newDevice);
+               await _uow.SaveChangesAsync(token);
+
+               _uow.DeviceHistory.Add(new(newDevice.Id, newDevice.Name, existingLocation.Name, newDevice.Type.GetDescription(), newDevice.ModbusId.ToString(), newDevice.RsBoundRate.GetDescription(), newDevice.RsDataBits.GetDescription(), newDevice.RsParity.GetDescription(), newDevice.RsStopBits.GetDescription(), newDevice.IncludeReport, newDevice.IsActive, createdBy.Id));
+               await _uow.SaveChangesAsync(token);
             },
             cancellationToken
          );
