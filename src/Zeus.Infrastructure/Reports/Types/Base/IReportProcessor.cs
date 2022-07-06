@@ -15,7 +15,7 @@ namespace Zeus.Infrastructure.Reports.Types.Base
       int GetDatePart(DateTime date);
       string GetFileName(DateOnly date);
       string GetHeader(string value, string locationName, DateOnly date);
-      Expression<Func<T, int>> GetPlcGroup<T>() where T : BasePlc;
+      Expression<Func<T, PlcGroupBy>> GetPlcGroup<T>() where T : BasePlc;
       DateRange GetRange(DateOnly date);
    }
 }

@@ -3,16 +3,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac.Features.Indexed;
-using AutoMapper;
+using Mapster;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using Zeus.Enums.Plcs;
 using Zeus.Enums.Reports;
 using Zeus.Infrastructure.Extensions;
 using Zeus.Infrastructure.Handlers.Base;
-using Zeus.Infrastructure.Mongo;
 using Zeus.Infrastructure.Reports.Plcs.Base;
 using Zeus.Infrastructure.Reports.Types.Base;
 using Zeus.Infrastructure.Repositories;
@@ -29,7 +27,7 @@ namespace Zeus.Infrastructure.Handlers.Reports.Queries
       private readonly IIndex<PlcType, IPlcProcessor> _plcProcessors;
       private readonly IIndex<ReportType, IReportProcessor> _reportProcessors;
 
-      public GetReportHandler(UnitOfWork uow, IMapper mapper, IIndex<PlcType, IPlcProcessor> plcProcessors, IIndex<ReportType, IReportProcessor> reportProcessors) : base(uow, mapper)
+      public GetReportHandler(UnitOfWork uow, TypeAdapterConfig mapper, IIndex<PlcType, IPlcProcessor> plcProcessors, IIndex<ReportType, IReportProcessor> reportProcessors) : base(uow, mapper)
       {
          ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
          _plcProcessors = plcProcessors;
@@ -57,11 +55,11 @@ namespace Zeus.Infrastructure.Handlers.Reports.Queries
       private async Task CreateSheetsAsync(ExcelWorksheets sheets, GetReportQuery request, IReportProcessor reportProcessor, CancellationToken cancellationToken)
       {
          IReadOnlyCollection<LocationReportDto> locations = await _uow.Location
-            .AsQueryable()
+            .AsNoTracking()
             .Where(x => x.IncludeReport)
             .OrderBy(x => x.Name)
-            .ProjectTo<LocationReportDto>(_mapper)
-            .ToListAsync(cancellationToken);
+            .ProjectToType<LocationReportDto>(_mapper)
+            .ToArrayAsync(cancellationToken);
 
          if (locations.Count == 0)
          {
@@ -69,42 +67,33 @@ namespace Zeus.Infrastructure.Handlers.Reports.Queries
          }
 
          IReadOnlyCollection<DeviceReportDto> devices = await _uow.Device
-            .AsQueryable()
+            .AsNoTracking()
             .Where(x => x.IncludeReport)
             .OrderBy(x => x.Name)
-            .ProjectTo<DeviceReportDto>(_mapper)
-            .ToListAsync(cancellationToken);
+            .ProjectToType<DeviceReportDto>(_mapper)
+            .ToArrayAsync(cancellationToken);
 
          if (devices.Count == 0)
          {
             return;
          }
 
-         List<Task> tasks = new();
          foreach (LocationReportDto location in locations)
          {
-            IReadOnlyDictionary<PlcType, DeviceReportDto[]> deviceGroups = devices
-               .Where(x => x.LocationId == location.Id)
-               .GroupBy(x => x.PlcType)
-               .ToDictionary(x => x.Key, x => x.ToArray());
+            ExcelWorksheet sheet = sheets.Copy($"{request.Type.GetDescription()}_{request.Lang.GetDescription()}", location.Name);
+            sheet.View.ZoomScale = 70;
 
-            tasks.Add(CreateSheetAsync(sheets, request, location, deviceGroups, reportProcessor, cancellationToken));
+            ExcelRange headerCell = sheet.Cells[1, 1];
+            headerCell.Value = reportProcessor.GetHeader(headerCell.GetCellValue<string>(), location.Name, request.Date);
          }
 
-         await Task.WhenAll(tasks);
-      }
-
-      private async Task CreateSheetAsync(ExcelWorksheets sheets, GetReportQuery request, LocationReportDto location, IReadOnlyDictionary<PlcType, DeviceReportDto[]> deviceGroups, IReportProcessor reportProcessor, CancellationToken cancellationToken)
-      {
-         ExcelWorksheet sheet = sheets.Copy($"{request.Type.GetDescription()}_{request.Lang.GetDescription()}", location.Name);
-         sheet.View.ZoomScale = 70;
-
-         ExcelRange headerCell = sheet.Cells[1, 1];
-         headerCell.Value = reportProcessor.GetHeader(headerCell.GetCellValue<string>(), location.Name, request.Date);
+         IReadOnlyDictionary<PlcType, DeviceReportDto[]> deviceGroups = devices
+            .GroupBy(x => x.PlcType)
+            .ToDictionary(x => x.Key, x => x.ToArray());
 
          foreach (var deviceGroup in deviceGroups)
          {
-            await _plcProcessors[deviceGroup.Key].FillDataAsync(_uow, sheet, request.Date, deviceGroup.Value, reportProcessor, _mapper, cancellationToken);
+            await _plcProcessors[deviceGroup.Key].FillDataAsync(_uow, sheets, request.Date, locations, deviceGroup.Value, reportProcessor, _mapper, cancellationToken);
          }
       }
    }

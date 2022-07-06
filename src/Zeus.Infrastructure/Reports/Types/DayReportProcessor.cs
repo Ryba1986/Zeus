@@ -33,9 +33,13 @@ namespace Zeus.Infrastructure.Reports.Types
          return GetHeader(value, locationName, date, "yyyy-MM-dd");
       }
 
-      public Expression<Func<T, int>> GetPlcGroup<T>() where T : BasePlc
+      public Expression<Func<T, PlcGroupBy>> GetPlcGroup<T>() where T : BasePlc
       {
-         return x => x.Date.Hour;
+         return x => new()
+         {
+            DatePart = x.Date.Hour,
+            DeviceId = x.DeviceId
+         };
       }
 
       public DateRange GetRange(DateOnly date)
