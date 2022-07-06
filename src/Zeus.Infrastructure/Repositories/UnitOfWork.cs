@@ -1,9 +1,13 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Locations;
 using Zeus.Domain.Plcs.Meters;
 using Zeus.Domain.Plcs.Rvds;
 using Zeus.Domain.Users;
+using Zeus.Models.Base;
 
 namespace Zeus.Infrastructure.Repositories
 {
@@ -34,6 +38,23 @@ namespace Zeus.Infrastructure.Repositories
 
          Meter = Set<Meter>();
          Rvd145 = Set<Rvd145>();
+      }
+
+      public async Task<Result> ExecuteTransactionAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken)
+      {
+         try
+         {
+            await Database.BeginTransactionAsync(cancellationToken);
+            await action(cancellationToken);
+            await Database.CommitTransactionAsync(cancellationToken);
+
+            return Result.Success();
+         }
+         catch
+         {
+            await Database.RollbackTransactionAsync(CancellationToken.None);
+            return Result.Error("Transaction error");
+         }
       }
 
       protected override void OnModelCreating(ModelBuilder modelBuilder)
