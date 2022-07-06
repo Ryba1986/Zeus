@@ -1,3 +1,4 @@
+using System;
 using MediatR;
 
 namespace Zeus.Models.Base.Commands
@@ -7,7 +8,12 @@ namespace Zeus.Models.Base.Commands
       public int Id { get; init; }
       public bool IsActive { get; init; }
       public int ModifiedById { get; private set; }
-      public short Version { get; init; }
+      public byte[] Version { get; init; }
+
+      public BaseUpdateCommand()
+      {
+         Version = Array.Empty<byte>();
+      }
 
       public void Update(int modifiedById)
       {
