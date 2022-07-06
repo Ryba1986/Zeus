@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
+using Mapster;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Infrastructure.Handlers.Base;
-using Zeus.Infrastructure.Mongo;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Plcs.Meters.Dto;
 using Zeus.Models.Plcs.Meters.Queries;
@@ -16,7 +15,7 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Queries
 {
    internal sealed class GetMeterChartHandler : BaseRequestQueryHandler, IRequestHandler<GetMeterChartQuery, IEnumerable<MeterChartDto>>
    {
-      public GetMeterChartHandler(UnitOfWork uow, IMapper mapper) : base(uow, mapper)
+      public GetMeterChartHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
@@ -25,15 +24,15 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Queries
          DateTime dateTime = request.Date.ToDateTime(TimeOnly.MinValue);
 
          return await _uow.Meter
-            .AsQueryable()
+            .AsNoTracking()
             .Where(x =>
-               x.DeviceId == request.DeviceId &&
                x.Date >= dateTime &&
-               x.Date < dateTime.AddDays(1)
+               x.Date < dateTime.AddDays(1) &&
+               x.DeviceId == request.DeviceId
             )
             .OrderBy(x => x.Date)
-            .ProjectTo<MeterChartDto>(_mapper)
-            .ToListAsync(cancellationToken);
+            .ProjectToType<MeterChartDto>(_mapper)
+            .ToArrayAsync(cancellationToken);
       }
    }
 }

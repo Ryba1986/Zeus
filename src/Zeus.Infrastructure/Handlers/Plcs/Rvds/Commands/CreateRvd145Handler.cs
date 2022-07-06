@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Plcs.Rvds;
 using Zeus.Enums.Devices;
@@ -23,11 +22,11 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Commands
       public async Task<Result> Handle(CreateRvd145Command request, CancellationToken cancellationToken)
       {
          Rvd145? existingRvd = await _uow.Rvd145
-            .AsQueryable()
-            .FirstOrDefaultAsync(x =>
-               x.DeviceId == request.DeviceId &&
-               x.Date == request.Date.RoundToSecond()
-            , cancellationToken);
+           .AsNoTracking()
+           .FirstOrDefaultAsync(x =>
+              x.Date == request.Date.RoundToSecond() &&
+              x.DeviceId == request.DeviceId
+           , cancellationToken);
 
          if (existingRvd is not null)
          {
@@ -35,7 +34,7 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Commands
          }
 
          Device? existingDevice = await _uow.Device
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Id == request.DeviceId
             , cancellationToken);
@@ -53,7 +52,9 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Commands
             return Result.Error("Device location is incorrect.");
          }
 
-         await _uow.Rvd145.InsertOneAsync(new(request.OutsideTemp, request.CoHighInletPresure, request.Alarm, request.CoHighOutletTemp, request.CoLowInletTemp, request.CoLowOutletPresure, request.CoHeatCurveTemp, request.CoPumpStatus, request.CoStatus, request.CwuTemp, request.CwuTempSet, request.CwuCirculationTemp, request.CwuPumpStatus, request.CwuStatus, existingDevice.Id, request.Date), cancellationToken: cancellationToken);
+         _uow.Rvd145.Add(new(request.OutsideTemp, request.CoHighInletPresure, request.Alarm, request.CoHighOutletTemp, request.CoLowInletTemp, request.CoLowOutletPresure, request.CoHeatCurveTemp, request.CoPumpStatus, request.CoStatus, request.CwuTemp, request.CwuTempSet, request.CwuCirculationTemp, request.CwuPumpStatus, request.CwuStatus, request.Date, existingDevice.Id));
+
+         await _uow.SaveChangesAsync(cancellationToken);
          return Result.Success();
       }
    }

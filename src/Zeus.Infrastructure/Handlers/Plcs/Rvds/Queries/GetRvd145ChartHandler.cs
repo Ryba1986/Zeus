@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
+using Mapster;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Infrastructure.Handlers.Base;
-using Zeus.Infrastructure.Mongo;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Plcs.Rvds.Dto;
 using Zeus.Models.Plcs.Rvds.Queries;
@@ -16,7 +15,7 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Queries
 {
    internal sealed class GetRvd145ChartHandler : BaseRequestQueryHandler, IRequestHandler<GetRvd145ChartQuery, IEnumerable<Rvd145ChartDto>>
    {
-      public GetRvd145ChartHandler(UnitOfWork uow, IMapper mapper) : base(uow, mapper)
+      public GetRvd145ChartHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
@@ -25,15 +24,15 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Queries
          DateTime date = request.Date.ToDateTime(TimeOnly.MinValue);
 
          return await _uow.Rvd145
-            .AsQueryable()
+            .AsNoTracking()
             .Where(x =>
-               x.DeviceId == request.DeviceId &&
                x.Date >= date &&
-               x.Date < date.AddDays(1)
+               x.Date < date.AddDays(1) &&
+               x.DeviceId == request.DeviceId
             )
             .OrderBy(x => x.Date)
-            .ProjectTo<Rvd145ChartDto>(_mapper)
-            .ToListAsync(cancellationToken);
+            .ProjectToType<Rvd145ChartDto>(_mapper)
+            .ToArrayAsync(cancellationToken);
       }
    }
 }

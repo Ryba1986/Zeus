@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Plcs.Meters;
 using Zeus.Enums.Devices;
@@ -23,10 +22,10 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Commands
       public async Task<Result> Handle(CreateMeterCommand request, CancellationToken cancellationToken)
       {
          Meter? existingMeter = await _uow.Meter
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
-               x.DeviceId == request.DeviceId &&
-               x.Date == request.Date.RoundToSecond()
+               x.Date == request.Date.RoundToSecond() &&
+               x.DeviceId == request.DeviceId
             , cancellationToken);
 
          if (existingMeter is not null)
@@ -35,7 +34,6 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Commands
          }
 
          Device? existingDevice = await _uow.Device
-            .AsQueryable()
             .FirstOrDefaultAsync(x =>
                x.Id == request.DeviceId
             , cancellationToken);
@@ -53,20 +51,15 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Commands
             return Result.Error("Device location is incorrect.");
          }
 
-         return await _uow.ExecuteTransactionAsync(
-            async (session, token) =>
-            {
-               // TODO: move to event
-               if (!string.IsNullOrWhiteSpace(request.SerialNumber) && existingDevice.SerialNumber != request.SerialNumber)
-               {
-                  existingDevice.Update(request.SerialNumber);
-                  await _uow.Device.ReplaceOneAsync(session, x => x.Id == existingDevice.Id, existingDevice, cancellationToken: token);
-               }
+         if (!string.IsNullOrWhiteSpace(request.SerialNumber) && existingDevice.SerialNumber != request.SerialNumber)
+         {
+            existingDevice.Update(request.SerialNumber);
+         }
 
-               await _uow.Meter.InsertOneAsync(session, new(request.InletTemp, request.OutletTemp, request.Power, request.Volume, request.VolumeSummary, request.EnergySummary, request.HourCount, request.ErrorCode, existingDevice.Id, request.Date), cancellationToken: token);
-            },
-            cancellationToken
-         );
+         _uow.Meter.Add(new(request.InletTemp, request.OutletTemp, request.Power, request.Volume, request.VolumeSummary, request.EnergySummary, request.HourCount, request.ErrorCode, request.Date, existingDevice.Id));
+
+         await _uow.SaveChangesAsync(cancellationToken);
+         return Result.Success();
       }
    }
 }
