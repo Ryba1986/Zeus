@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Users;
 using Zeus.Infrastructure.Handlers.Base;
 using Zeus.Infrastructure.Helpers;
@@ -26,7 +25,7 @@ namespace Zeus.Infrastructure.Handlers.Users.Queries
       public async Task<Result> Handle(GetUserTokenQuery request, CancellationToken cancellationToken)
       {
          User? existingUser = await _uow.User
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Email == request.Email &&
                x.Password == request.Password.CreatePassword() &&

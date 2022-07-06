@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Users;
 using Zeus.Enums.Users;
 using Zeus.Infrastructure.Handlers.Base;
@@ -27,7 +26,7 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
          }
 
          User? createdBy = await _uow.User
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Id == request.CreatedById &&
                x.IsActive
@@ -39,7 +38,7 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
          }
 
          User? existingUser = await _uow.User
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Email == request.Email
             , cancellationToken);
@@ -52,10 +51,13 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
          User newUser = new(request.Name, request.Email, request.Email, request.Role, request.IsActive);
 
          return await _uow.ExecuteTransactionAsync(
-            async (session, token) =>
+            async token =>
             {
-               await _uow.User.InsertOneAsync(session, newUser, cancellationToken: token);
-               await _uow.UserHistory.InsertOneAsync(session, new(newUser.Id, newUser.Name, newUser.Email, newUser.Role.GetDescription(), newUser.IsActive, createdBy.Id), cancellationToken: token);
+               _uow.User.Add(newUser);
+               await _uow.SaveChangesAsync(token);
+
+               _uow.UserHistory.Add(new(newUser.Id, newUser.Name, newUser.Email, newUser.Role.GetDescription(), newUser.IsActive, createdBy.Id));
+               await _uow.SaveChangesAsync(token);
             },
             cancellationToken
          );

@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Users;
 using Zeus.Infrastructure.Handlers.Base;
 using Zeus.Infrastructure.Repositories;
@@ -21,7 +20,6 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
       public async Task<Result> Handle(ChangePasswordUserCommand request, CancellationToken cancellationToken)
       {
          User? existingUser = await _uow.User
-            .AsQueryable()
             .FirstOrDefaultAsync(x =>
                x.Email == request.Email &&
                x.Password == request.OldPassword.CreatePassword() &&
@@ -34,8 +32,8 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
          }
 
          existingUser.Update(request.NewPassword);
-         await _uow.User.ReplaceOneAsync(x => x.Id == existingUser.Id, existingUser, cancellationToken: cancellationToken);
 
+         await _uow.SaveChangesAsync(cancellationToken);
          return Result.Success();
       }
    }

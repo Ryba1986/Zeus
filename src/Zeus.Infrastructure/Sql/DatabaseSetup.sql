@@ -24,7 +24,6 @@ BEGIN TRY
       [IsActive] BIT NOT NULL,
       [Version] ROWVERSION NOT NULL,
       CONSTRAINT [PK_User_Id] PRIMARY KEY CLUSTERED ([Id]),
-      CONSTRAINT [UK_User_Name] UNIQUE ([Name]),
       CONSTRAINT [UK_User_Email] UNIQUE ([Email]),
    );
    -- // TODO: move to other logic

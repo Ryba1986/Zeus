@@ -1,8 +1,8 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Users;
 using Zeus.Enums.Users;
 using Zeus.Infrastructure.Handlers.Base;
@@ -22,19 +22,19 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
       public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
       {
          User? modifiedBy = await _uow.User
-            .AsQueryable()
-            .FirstOrDefaultAsync(x =>
-               x.Id == request.ModifiedById &&
-               x.IsActive
-            , cancellationToken);
+               .AsNoTracking()
+               .FirstOrDefaultAsync(x =>
+                  x.Id == request.ModifiedById &&
+                  x.IsActive
+               , cancellationToken);
 
-         if (modifiedBy is null)
+         if (modifiedBy == null)
          {
             return Result.Error($"Cannot find an active user with id {request.ModifiedById}.");
          }
 
          User? otherUser = await _uow.User
-            .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                x.Email == request.Email &&
                x.Id != request.Id
@@ -46,7 +46,6 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
          }
 
          User? existingUser = await _uow.User
-            .AsQueryable()
             .FirstOrDefaultAsync(x =>
                x.Id == request.Id
             , cancellationToken);
@@ -55,7 +54,7 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
          {
             return Result.Error($"User with id: {request.Id} not found.");
          }
-         if (existingUser.Version != request.Version)
+         if (!existingUser.Version.SequenceEqual(request.Version))
          {
             return Result.Error("User has been changed.");
          }
@@ -79,41 +78,34 @@ namespace Zeus.Infrastructure.Handlers.Users.Commands
             }
          }
 
-         return await _uow.ExecuteTransactionAsync(
-            async (session, token) =>
-            {
-               await CreateHistoryAsync(session, existingUser, request, modifiedBy, token);
+         CreateHistory(existingUser, request, modifiedBy);
+         existingUser.Update(request.Name, request.Email, request.Role, request.IsActive);
 
-               existingUser.Update(request.Name, request.Email, request.Role, request.IsActive);
-               await _uow.User.ReplaceOneAsync(session, x => x.Id == existingUser.Id, existingUser, cancellationToken: token);
-            },
-            cancellationToken
-         );
+         await _uow.SaveChangesAsync(cancellationToken);
+         return Result.Success();
       }
 
-      private async Task CreateHistoryAsync(IClientSessionHandle session, User user, UpdateUserCommand request, User createdBy, CancellationToken cancellationToken)
+      private void CreateHistory(User user, UpdateUserCommand request, User createdBy)
       {
-         if (
-               user.Name == request.Name &&
-               user.Email == request.Email &&
-               user.Role == request.Role &&
-               user.IsActive == request.IsActive
-            )
+         if
+         (
+            user.Name == request.Name &&
+            user.Email == request.Email &&
+            user.Role == request.Role &&
+            user.IsActive == request.IsActive
+         )
          {
             return;
          }
 
-         await _uow.UserHistory.InsertOneAsync(
-            session,
-            new(
-               user.Id,
-               user.Name != request.Name ? request.Name : string.Empty,
-               user.Email != request.Email ? request.Email : string.Empty,
-               user.Role != request.Role ? request.Role.GetDescription() : string.Empty,
-               request.IsActive,
-               createdBy.Id
-            ),
-            cancellationToken: cancellationToken);
+         _uow.UserHistory.Add(new(
+            user.Id,
+            user.Name != request.Name ? request.Name : string.Empty,
+            user.Email != request.Email ? request.Email : string.Empty,
+            user.Role != request.Role ? request.Role.GetDescription() : string.Empty,
+            request.IsActive,
+            createdBy.Id
+         ));
       }
    }
 }
