@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using Zeus.Domain.Plcs.Meters;
-using Zeus.Infrastructure.Mongo;
 using Zeus.Infrastructure.Reports.Plcs.Base;
 using Zeus.Infrastructure.Reports.Types.Base;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Devices.Dto;
+using Zeus.Models.Locations.Dto;
 using Zeus.Models.Plcs.Meters.Dto;
 using Zeus.Models.Utilities;
 using Zeus.Utilities.Extensions;
@@ -22,44 +20,34 @@ namespace Zeus.Infrastructure.Reports.Plcs
 {
    internal sealed class MeterPlcProcessor : BasePlcProcessor, IPlcProcessor
    {
-      private readonly Expression<Func<IGrouping<int, Meter>, MeterReportDto>> _selector;
-
-      public MeterPlcProcessor()
+      public async Task FillDataAsync(UnitOfWork uow, ExcelWorksheets sheets, DateOnly date, IReadOnlyCollection<LocationReportDto> locations, IReadOnlyCollection<DeviceReportDto> devices, IReportProcessor reportProcessor, TypeAdapterConfig mapper, CancellationToken cancellationToken)
       {
-         _selector = x => new()
+         IReadOnlyDictionary<int, MeterReportDto[]> plcData = await GetPlcDataAsync<Meter, MeterReportDto>(uow.Meter, date, reportProcessor, mapper, cancellationToken);
+         if (plcData.Count == 0)
          {
-            Date = x.Min(g => g.Date),
-            InletTempAvg = x.Average(g => g.InletTemp),
-            InletTempMin = x.Min(g => g.InletTemp),
-            InletTempMax = x.Max(g => g.InletTemp),
-            OutletTempAvg = x.Average(g => g.OutletTemp),
-            OutletTempMin = x.Min(g => g.OutletTemp),
-            OutletTempMax = x.Max(g => g.OutletTemp),
-            PowerAvg = x.Average(g => g.Power),
-            PowerMin = x.Min(g => g.Power),
-            PowerMax = x.Max(g => g.Power),
-            VolumeAvg = x.Average(g => g.Volume),
-            VolumeMin = x.Min(g => g.Volume),
-            VolumeMax = x.Max(g => g.Volume),
-            VolumeSummary = x.Max(g => g.VolumeSummary),
-            EnergySummary = x.Max(g => g.EnergySummary),
-         };
-      }
+            return;
+         }
 
-      public async Task FillDataAsync(UnitOfWork uow, ExcelWorksheet sheet, DateOnly date, IReadOnlyCollection<DeviceReportDto> devices, IReportProcessor reportProcessor, IMapper mapper, CancellationToken cancellationToken)
-      {
-         int startColumn = reportProcessor.StartingPoints.MeterColumn;
-
-         foreach (DeviceReportDto device in devices)
+         IReadOnlyDictionary<int, MeterDto> beforeData = await GetBeforeDataAsync(uow.Meter, date, devices, reportProcessor, mapper, cancellationToken);
+         if (beforeData.Count == 0)
          {
-            IReadOnlyCollection<MeterReportDto> currentPlcData = await GetPlcDataAsync(uow.Meter.AsQueryable(), date, device, reportProcessor, _selector, cancellationToken);
-            if (currentPlcData.Count == 0)
+            return;
+         }
+
+         foreach (LocationReportDto location in locations)
+         {
+            ExcelWorksheet sheet = sheets[location.Name];
+            int startColumn = reportProcessor.StartingPoints.MeterColumn;
+
+            foreach (DeviceReportDto device in devices.Where(x => x.LocationId == location.Id))
             {
-               return;
-            }
+               if (!plcData.ContainsKey(device.Id) || plcData[device.Id].Length == 0)
+               {
+                  continue;
+               }
 
-            MeterDto beforePlc = await GetBeforeDataAsync(uow.Meter.AsQueryable(), date, device, reportProcessor, mapper, cancellationToken);
-            startColumn += FillSheet(sheet, device, beforePlc, currentPlcData, startColumn, reportProcessor);
+               startColumn += FillSheet(sheet, device, beforeData[device.Id], plcData[device.Id], startColumn, reportProcessor);
+            }
          }
       }
 
@@ -123,34 +111,42 @@ namespace Zeus.Infrastructure.Reports.Plcs
          return summaryColIndex;
       }
 
-      private static async Task<MeterDto> GetBeforeDataAsync(IMongoQueryable<Meter> plc, DateOnly date, DeviceReportDto device, IReportProcessor reportProcessor, IMapper mapper, CancellationToken cancellationToken)
+      private static async Task<IReadOnlyDictionary<int, MeterDto>> GetBeforeDataAsync(IQueryable<Meter> plc, DateOnly date, IReadOnlyCollection<DeviceReportDto> devices, IReportProcessor reportProcessor, TypeAdapterConfig mapper, CancellationToken cancellationToken)
       {
          DateRange range = reportProcessor.GetRange(date);
 
-         MeterDto? before = await plc
-            .Where(x =>
-               x.DeviceId == device.Id &&
-               x.Date < range.Start
-            )
-            .OrderByDescending(x => x.Date)
-            .ProjectTo<MeterDto>(mapper)
-            .FirstOrDefaultAsync(cancellationToken);
+         Dictionary<int, MeterDto> result = new();
 
-         if (before is not null)
+         foreach (DeviceReportDto device in devices)
          {
-            return before;
+            MeterDto? before = await plc
+               .AsNoTracking()
+               .OrderByDescending(x => x.Date)
+               .ProjectToType<MeterDto>(mapper)
+               .FirstOrDefaultAsync(x =>
+                  x.Date < range.Start &&
+                  x.DeviceId == device.Id
+               , cancellationToken);
+
+            if (before is not null)
+            {
+               result.Add(device.Id, before);
+               continue;
+            }
+
+            before = await plc
+               .AsNoTracking()
+               .OrderBy(x => x.Date)
+               .ProjectToType<MeterDto>(mapper)
+               .FirstAsync(x =>
+                  x.Date < range.End &&
+                  x.DeviceId == device.Id
+               , cancellationToken);
+
+            result.Add(device.Id, before);
          }
 
-         before = await plc
-            .Where(x =>
-               x.DeviceId == device.Id &&
-               x.Date < range.End
-            )
-            .OrderBy(x => x.Date)
-            .ProjectTo<MeterDto>(mapper)
-            .FirstAsync(cancellationToken);
-
-         return before;
+         return result;
       }
    }
 }
