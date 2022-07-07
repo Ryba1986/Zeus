@@ -85,7 +85,7 @@ CREATE TABLE [Device]
       [SerialNumber] NVARCHAR(30) NOT NULL,
       [Type] SMALLINT NOT NULL,
       [ModbusId] TINYINT NOT NULL,
-      [RsBoundRate] SMALLINT NOT NULL,
+      [RsBoundRate] INT NOT NULL,
       [RsDataBits] TINYINT NOT NULL,
       [RsParity] TINYINT NOT NULL,
       [RsStopBits] TINYINT NOT NULL,
