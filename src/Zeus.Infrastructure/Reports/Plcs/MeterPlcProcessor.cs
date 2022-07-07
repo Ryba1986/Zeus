@@ -77,11 +77,11 @@ namespace Zeus.Infrastructure.Reports.Plcs
             sheet.Cells[rowIndex, startColumn + colIndex++].Value = meter.VolumeMin.Round();
             sheet.Cells[rowIndex, startColumn + colIndex++].Value = meter.VolumeMax.Round();
 
-            sheet.Cells[rowIndex, startColumn + colIndex++].Value = meter.VolumeSummary - beforeVolumeSummary;
-            beforeVolumeSummary = meter.VolumeSummary;
+            sheet.Cells[rowIndex, startColumn + colIndex++].Value = meter.VolumeSummaryMax - beforeVolumeSummary;
+            beforeVolumeSummary = meter.VolumeSummaryMax;
 
-            sheet.Cells[rowIndex, startColumn + colIndex++].Value = meter.EnergySummary - beforeEnergySummary;
-            beforeEnergySummary = meter.EnergySummary;
+            sheet.Cells[rowIndex, startColumn + colIndex++].Value = meter.EnergySummaryMax - beforeEnergySummary;
+            beforeEnergySummary = meter.EnergySummaryMax;
          }
 
          int summaryRowIndex = reportProcessor.StartingPoints.Row + reportProcessor.SummaryRowOffset;
@@ -103,8 +103,8 @@ namespace Zeus.Infrastructure.Reports.Plcs
          sheet.Cells[summaryRowIndex, startColumn + summaryColIndex++].Value = currentData.Min(x => x.VolumeMin).Round();
          sheet.Cells[summaryRowIndex, startColumn + summaryColIndex++].Value = currentData.Max(x => x.VolumeMax).Round();
 
-         sheet.Cells[summaryRowIndex, startColumn + summaryColIndex++].Value = currentData.Max(x => x.VolumeSummary) - beforeMeter.VolumeSummary;
-         sheet.Cells[summaryRowIndex, startColumn + summaryColIndex++].Value = currentData.Max(x => x.EnergySummary) - beforeMeter.EnergySummary;
+         sheet.Cells[summaryRowIndex, startColumn + summaryColIndex++].Value = currentData.Max(x => x.VolumeSummaryMax) - beforeMeter.VolumeSummary;
+         sheet.Cells[summaryRowIndex, startColumn + summaryColIndex++].Value = currentData.Max(x => x.EnergySummaryMax) - beforeMeter.EnergySummary;
 
          sheet.Cells[reportProcessor.StartingPoints.Row - 4, startColumn].Value = device.Name;
 

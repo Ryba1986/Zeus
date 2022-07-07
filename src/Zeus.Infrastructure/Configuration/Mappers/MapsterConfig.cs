@@ -119,8 +119,8 @@ namespace Zeus.Infrastructure.Configuration.Mappers
             .Map(d => d.VolumeAvg, s => s.Average(x => x.Volume))
             .Map(d => d.VolumeMin, s => s.Min(x => x.Volume))
             .Map(d => d.VolumeMax, s => s.Max(x => x.Volume))
-            .Map(d => d.VolumeSummary, s => s.Max(x => x.VolumeSummary))
-            .Map(d => d.EnergySummary, s => s.Max(x => x.EnergySummary));
+            .Map(d => d.VolumeSummaryMax, s => s.Max(x => x.VolumeSummary))
+            .Map(d => d.EnergySummaryMax, s => s.Max(x => x.EnergySummary));
 
          return cfg;
       }
