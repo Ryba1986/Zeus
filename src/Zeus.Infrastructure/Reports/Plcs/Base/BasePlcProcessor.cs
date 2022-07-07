@@ -14,18 +14,18 @@ namespace Zeus.Infrastructure.Reports.Plcs.Base
 {
    internal abstract class BasePlcProcessor
    {
-      public static async Task<IReadOnlyDictionary<int, D[]>> GetPlcDataAsync<S, D>(IQueryable<S> plc, DateOnly date, IReportProcessor reportProcessor, TypeAdapterConfig mapper, CancellationToken cancellationToken) where S : BasePlc where D : BasePlcReportDto
+      public static async Task<IReadOnlyDictionary<int, TResult[]>> GetPlcDataAsync<TSource, TResult>(IQueryable<TSource> plc, DateOnly date, IReportProcessor reportProcessor, TypeAdapterConfig mapper, CancellationToken cancellationToken) where TSource : BasePlc where TResult : BasePlcReportDto
       {
          DateRange range = reportProcessor.GetRange(date);
 
-         IReadOnlyCollection<D> result = await plc
+         IReadOnlyCollection<TResult> result = await plc
             .AsNoTracking()
             .Where(x =>
                x.Date >= range.Start &&
                x.Date < range.End
             )
-            .GroupBy(reportProcessor.GetPlcGroup<S>())
-            .ProjectToType<D>(mapper)
+            .GroupBy(reportProcessor.GetPlcGroup<TSource>())
+            .ProjectToType<TResult>(mapper)
             .ToArrayAsync(cancellationToken);
 
          return result
