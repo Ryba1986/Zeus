@@ -30,7 +30,7 @@ namespace Zeus.Infrastructure.Reports.Plcs
          {
             foreach (DeviceReportDto device in devices.Where(x => x.LocationId == location.Id))
             {
-               if (!plcData.ContainsKey(device.Id) || plcData[device.Id].Length == 0)
+               if (!plcData.ContainsKey(device.Id))
                {
                   continue;
                }
