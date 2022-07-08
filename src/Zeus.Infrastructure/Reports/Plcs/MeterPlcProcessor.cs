@@ -36,7 +36,6 @@ namespace Zeus.Infrastructure.Reports.Plcs
 
          foreach (LocationReportDto location in locations)
          {
-            ExcelWorksheet sheet = sheets[location.Name];
             int startColumn = reportProcessor.StartingPoints.MeterColumn;
 
             foreach (DeviceReportDto device in devices.Where(x => x.LocationId == location.Id))
@@ -46,7 +45,7 @@ namespace Zeus.Infrastructure.Reports.Plcs
                   continue;
                }
 
-               startColumn += FillSheet(sheet, device, beforeData[device.Id], plcData[device.Id], startColumn, reportProcessor);
+               startColumn += FillSheet(sheets[location.Name], device, beforeData[device.Id], plcData[device.Id], startColumn, reportProcessor);
             }
          }
       }

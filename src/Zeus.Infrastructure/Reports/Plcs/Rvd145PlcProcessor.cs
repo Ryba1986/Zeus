@@ -28,8 +28,6 @@ namespace Zeus.Infrastructure.Reports.Plcs
 
          foreach (LocationReportDto location in locations)
          {
-            ExcelWorksheet sheet = sheets[location.Name];
-
             foreach (DeviceReportDto device in devices.Where(x => x.LocationId == location.Id))
             {
                if (!plcData.ContainsKey(device.Id) || plcData[device.Id].Length == 0)
@@ -37,7 +35,7 @@ namespace Zeus.Infrastructure.Reports.Plcs
                   continue;
                }
 
-               FillSheet(sheet, device, plcData[device.Id], reportProcessor);
+               FillSheet(sheets[location.Name], device, plcData[device.Id], reportProcessor);
             }
          }
       }
