@@ -11,7 +11,7 @@ namespace Zeus.Infrastructure.Reports.Types.Base
       {
          StartingPoints = new()
          {
-            MeterColumn = 20,
+            MeterColumn = 26,
             PlcColumn = 2,
             Row = 8
          };

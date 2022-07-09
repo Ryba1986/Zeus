@@ -19,18 +19,27 @@ namespace Zeus.Models.Devices.Dto
          };
 
       public bool IsPlc =>
-         Type != DeviceType.Kamstrup &&
-         Type != DeviceType.KamstrupRs500;
+         Type switch
+         {
+            DeviceType.Kamstrup or DeviceType.KamstrupRs500 => false,
+            _ => true
+         };
 
-      public bool IsCo =>
-         Type == DeviceType.ClimatixCo ||
-         Type == DeviceType.ClimatixCoCwu ||
-         Type == DeviceType.Rvd145Co ||
-         Type == DeviceType.Rvd145CoCwu;
+      public bool IsCo1 => IsPlc;
+
+      public bool IsCo2 =>
+         Type switch
+         {
+            DeviceType.ClimatixCoCo or DeviceType.Rvd145CoCo => true,
+            _ => false
+         };
 
       public bool IsCwu =>
-         Type == DeviceType.ClimatixCoCwu ||
-         Type == DeviceType.Rvd145CoCwu;
+         Type switch
+         {
+            DeviceType.ClimatixCoCwu or DeviceType.Rvd145CoCwu => true,
+            _ => false
+         };
 
       public DeviceReportDto()
       {

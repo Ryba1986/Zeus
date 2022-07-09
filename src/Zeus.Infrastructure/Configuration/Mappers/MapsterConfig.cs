@@ -64,7 +64,8 @@ namespace Zeus.Infrastructure.Configuration.Mappers
 
          cfg.NewConfig<Device, DeviceReportDto>()
             .Ignore(x => x.IsPlc)
-            .Ignore(x => x.IsCo)
+            .Ignore(x => x.IsCo1)
+            .Ignore(x => x.IsCo2)
             .Ignore(x => x.IsCwu)
             .Ignore(x => x.PlcType);
 
