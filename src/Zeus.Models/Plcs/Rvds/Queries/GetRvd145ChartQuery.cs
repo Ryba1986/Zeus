@@ -5,7 +5,7 @@ using Zeus.Models.Plcs.Rvds.Dto;
 
 namespace Zeus.Models.Plcs.Rvds.Queries
 {
-   public sealed class GetRvd145ChartQuery : IRequest<IReadOnlyCollection<Rvd145ChartDto>>
+   public sealed class GetRvd145ChartQuery : IRequest<IEnumerable<Rvd145ChartDto>>
    {
       public int DeviceId { get; set; }
       public DateOnly Date { get; init; }
