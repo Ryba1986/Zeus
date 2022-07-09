@@ -10,7 +10,10 @@ namespace Zeus.Enums.Plcs
       [Description("Meter")]
       Meter = 1,
 
+      [Description("Climatix")]
+      Climatix = 2,
+
       [Description("Rvd145")]
-      Rvd145 = 2,
+      Rvd145 = 3,
    }
 }

@@ -12,13 +12,13 @@ namespace Zeus.Models.Plcs.Rvds.Dto
       public float CoHighInletPresureMin { get; init; }
       public float CoHighInletPresureMax { get; init; }
 
-      public float CoLowInletTempAvg { get; init; }
-      public float CoLowInletTempMin { get; init; }
-      public float CoLowInletTempMax { get; init; }
+      public float Co1LowInletTempAvg { get; init; }
+      public float Co1LowInletTempMin { get; init; }
+      public float Co1LowInletTempMax { get; init; }
 
-      public float CoLowOutletPresureAvg { get; init; }
-      public float CoLowOutletPresureMin { get; init; }
-      public float CoLowOutletPresureMax { get; init; }
+      public float Co1LowOutletPresureAvg { get; init; }
+      public float Co1LowOutletPresureMin { get; init; }
+      public float Co1LowOutletPresureMax { get; init; }
 
       public float CwuTempAvg { get; init; }
       public float CwuTempMin { get; init; }

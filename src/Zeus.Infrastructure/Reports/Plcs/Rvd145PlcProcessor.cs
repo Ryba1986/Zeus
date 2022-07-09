@@ -56,13 +56,13 @@ namespace Zeus.Infrastructure.Reports.Plcs
 
             if (device.IsCo1)
             {
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 6].Value = rvd.CoLowInletTempAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 7].Value = rvd.CoLowInletTempMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 8].Value = rvd.CoLowInletTempMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 6].Value = rvd.Co1LowInletTempAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 7].Value = rvd.Co1LowInletTempMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 8].Value = rvd.Co1LowInletTempMax.Round();
 
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 9].Value = rvd.CoLowOutletPresureAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 10].Value = rvd.CoLowOutletPresureMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 11].Value = rvd.CoLowOutletPresureMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 9].Value = rvd.Co1LowOutletPresureAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 10].Value = rvd.Co1LowOutletPresureMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 11].Value = rvd.Co1LowOutletPresureMax.Round();
             }
 
             if (device.IsCwu)
@@ -89,13 +89,13 @@ namespace Zeus.Infrastructure.Reports.Plcs
 
          if (device.IsCo1)
          {
-            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 6].Value = data.Average(x => x.CoLowInletTempAvg).Round();
-            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 7].Value = data.Min(x => x.CoLowInletTempMin).Round();
-            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 8].Value = data.Max(x => x.CoLowInletTempMax).Round();
+            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 6].Value = data.Average(x => x.Co1LowInletTempAvg).Round();
+            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 7].Value = data.Min(x => x.Co1LowInletTempMin).Round();
+            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 8].Value = data.Max(x => x.Co1LowInletTempMax).Round();
 
-            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 9].Value = data.Average(x => x.CoLowOutletPresureAvg).Round();
-            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 10].Value = data.Min(x => x.CoLowOutletPresureMin).Round();
-            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 11].Value = data.Max(x => x.CoLowOutletPresureMax).Round();
+            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 9].Value = data.Average(x => x.Co1LowOutletPresureAvg).Round();
+            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 10].Value = data.Min(x => x.Co1LowOutletPresureMin).Round();
+            sheet.Cells[summaryRowIndex, reportProcessor.StartingPoints.PlcColumn + 11].Value = data.Max(x => x.Co1LowOutletPresureMax).Round();
          }
 
          if (device.IsCwu)

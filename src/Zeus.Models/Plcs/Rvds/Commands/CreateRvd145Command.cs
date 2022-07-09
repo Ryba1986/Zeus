@@ -8,12 +8,12 @@ namespace Zeus.Models.Plcs.Rvds.Commands
       public float CoHighInletPresure { get; init; }
       public short Alarm { get; init; }
 
-      public float CoHighOutletTemp { get; init; }
-      public float CoLowInletTemp { get; init; }
-      public float CoLowOutletPresure { get; init; }
-      public float CoHeatCurveTemp { get; init; }
-      public bool CoPumpStatus { get; init; }
-      public bool CoStatus { get; init; }
+      public float Co1HighOutletTemp { get; init; }
+      public float Co1LowInletTemp { get; init; }
+      public float Co1LowOutletPresure { get; init; }
+      public float Co1HeatCurveTemp { get; init; }
+      public bool Co1PumpStatus { get; init; }
+      public bool Co1Status { get; init; }
 
       public float CwuTemp { get; init; }
       public float CwuTempSet { get; init; }

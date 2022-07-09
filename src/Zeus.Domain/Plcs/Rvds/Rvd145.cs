@@ -10,12 +10,12 @@ namespace Zeus.Domain.Plcs.Rvds
       public float CoHighInletPresure { get; init; }
       public short Alarm { get; init; }
 
-      public float CoHighOutletTemp { get; init; }
-      public float CoLowInletTemp { get; init; }
-      public float CoLowOutletPresure { get; init; }
-      public float CoHeatCurveTemp { get; init; }
-      public bool CoPumpStatus { get; init; }
-      public bool CoStatus { get; init; }
+      public float Co1HighOutletTemp { get; init; }
+      public float Co1LowInletTemp { get; init; }
+      public float Co1LowOutletPresure { get; init; }
+      public float Co1HeatCurveTemp { get; init; }
+      public bool Co1PumpStatus { get; init; }
+      public bool Co1Status { get; init; }
 
       public float CwuTemp { get; init; }
       public float CwuTempSet { get; init; }
@@ -23,18 +23,18 @@ namespace Zeus.Domain.Plcs.Rvds
       public bool CwuPumpStatus { get; init; }
       public bool CwuStatus { get; init; }
 
-      public Rvd145(float outsideTemp, float coHighInletPresure, short alarm, float coHighOutletTemp, float coLowInletTemp, float coLowOutletPresure, float coHeatCurveTemp, bool coPumpStatus, bool coStatus, float cwuTemp, float cwuTempSet, float cwuCirculationTemp, bool cwuPumpStatus, bool cwuStatus, DateTime date, int deviceId) : base(date, deviceId)
+      public Rvd145(float outsideTemp, float coHighInletPresure, short alarm, float co1HighOutletTemp, float co1LowInletTemp, float co1LowOutletPresure, float co1HeatCurveTemp, bool co1PumpStatus, bool co1Status, float cwuTemp, float cwuTempSet, float cwuCirculationTemp, bool cwuPumpStatus, bool cwuStatus, DateTime date, int deviceId) : base(date, deviceId)
       {
          OutsideTemp = outsideTemp.Round();
          CoHighInletPresure = coHighInletPresure.Round();
          Alarm = alarm;
 
-         CoHighOutletTemp = coHighOutletTemp.Round();
-         CoLowInletTemp = coLowInletTemp.Round();
-         CoLowOutletPresure = coLowOutletPresure.Round();
-         CoHeatCurveTemp = coHeatCurveTemp.Round();
-         CoPumpStatus = coPumpStatus;
-         CoStatus = coStatus;
+         Co1HighOutletTemp = co1HighOutletTemp.Round();
+         Co1LowInletTemp = co1LowInletTemp.Round();
+         Co1LowOutletPresure = co1LowOutletPresure.Round();
+         Co1HeatCurveTemp = co1HeatCurveTemp.Round();
+         Co1PumpStatus = co1PumpStatus;
+         Co1Status = co1Status;
 
          CwuTemp = cwuTemp.Round();
          CwuTempSet = cwuTempSet.Round();

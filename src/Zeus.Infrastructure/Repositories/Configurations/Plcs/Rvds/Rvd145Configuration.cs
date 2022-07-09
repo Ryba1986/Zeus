@@ -24,22 +24,22 @@ namespace Zeus.Infrastructure.Repositories.Configurations.Plcs.Rvds
          builder.Property(x => x.Alarm)
             .IsRequired();
 
-         builder.Property(x => x.CoHighOutletTemp)
+         builder.Property(x => x.Co1HighOutletTemp)
             .IsRequired();
 
-         builder.Property(x => x.CoLowInletTemp)
+         builder.Property(x => x.Co1LowInletTemp)
             .IsRequired();
 
-         builder.Property(x => x.CoLowOutletPresure)
+         builder.Property(x => x.Co1LowOutletPresure)
             .IsRequired();
 
-         builder.Property(x => x.CoHeatCurveTemp)
+         builder.Property(x => x.Co1HeatCurveTemp)
             .IsRequired();
 
-         builder.Property(x => x.CoPumpStatus)
+         builder.Property(x => x.Co1PumpStatus)
             .IsRequired();
 
-         builder.Property(x => x.CoStatus)
+         builder.Property(x => x.Co1Status)
             .IsRequired();
 
          builder.Property(x => x.CwuTemp)

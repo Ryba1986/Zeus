@@ -52,7 +52,7 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Commands
             return Result.Error("Device location is incorrect.");
          }
 
-         _uow.Rvd145.Add(new(request.OutsideTemp, request.CoHighInletPresure, request.Alarm, request.CoHighOutletTemp, request.CoLowInletTemp, request.CoLowOutletPresure, request.CoHeatCurveTemp, request.CoPumpStatus, request.CoStatus, request.CwuTemp, request.CwuTempSet, request.CwuCirculationTemp, request.CwuPumpStatus, request.CwuStatus, request.Date, existingDevice.Id));
+         _uow.Rvd145.Add(new(request.OutsideTemp, request.CoHighInletPresure, request.Alarm, request.Co1HighOutletTemp, request.Co1LowInletTemp, request.Co1LowOutletPresure, request.Co1HeatCurveTemp, request.Co1PumpStatus, request.Co1Status, request.CwuTemp, request.CwuTempSet, request.CwuCirculationTemp, request.CwuPumpStatus, request.CwuStatus, request.Date, existingDevice.Id));
 
          await _uow.SaveChangesAsync(cancellationToken);
          return Result.Success();
