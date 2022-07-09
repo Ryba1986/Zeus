@@ -23,9 +23,9 @@ namespace Zeus.Infrastructure.Reports.Types
          return date.DayOfYear - 1;
       }
 
-      public string GetFileName(DateOnly date)
+      public string GetFileName(string fileName, DateOnly date)
       {
-         return $"Report_{date:yyyy}_365.xlsx";
+         return $"{fileName}_{date:yyyy}_365.xlsx";
       }
 
       public string GetHeader(string value, string locationName, DateOnly date)

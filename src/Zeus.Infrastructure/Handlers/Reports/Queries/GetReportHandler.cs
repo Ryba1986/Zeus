@@ -9,8 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using Zeus.Enums.Plcs;
 using Zeus.Enums.Reports;
+using Zeus.Enums.System;
 using Zeus.Infrastructure.Extensions;
 using Zeus.Infrastructure.Handlers.Base;
+using Zeus.Infrastructure.Reports.Language.Base;
 using Zeus.Infrastructure.Reports.Plcs.Base;
 using Zeus.Infrastructure.Reports.Types.Base;
 using Zeus.Infrastructure.Repositories;
@@ -24,12 +26,15 @@ namespace Zeus.Infrastructure.Handlers.Reports.Queries
 {
    internal sealed class GetReportHandler : BaseRequestQueryHandler, IRequestHandler<GetReportQuery, ReportFileDto>
    {
+      private readonly IIndex<Language, ILanguageProcessor> _languageProcessors;
       private readonly IIndex<PlcType, IPlcProcessor> _plcProcessors;
       private readonly IIndex<ReportType, IReportProcessor> _reportProcessors;
 
-      public GetReportHandler(UnitOfWork uow, TypeAdapterConfig mapper, IIndex<PlcType, IPlcProcessor> plcProcessors, IIndex<ReportType, IReportProcessor> reportProcessors) : base(uow, mapper)
+      public GetReportHandler(UnitOfWork uow, TypeAdapterConfig mapper, IIndex<Language, ILanguageProcessor> languageProcessors, IIndex<PlcType, IPlcProcessor> plcProcessors, IIndex<ReportType, IReportProcessor> reportProcessors) : base(uow, mapper)
       {
          ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+         _languageProcessors = languageProcessors;
          _plcProcessors = plcProcessors;
          _reportProcessors = reportProcessors;
       }
@@ -46,7 +51,7 @@ namespace Zeus.Infrastructure.Handlers.Reports.Queries
 
          return new()
          {
-            Name = reportProcessor.GetFileName(request.Date),
+            Name = reportProcessor.GetFileName(_languageProcessors[request.Lang].FIleName, request.Date),
             Type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             Content = ep.GetAsByteArray()
          };

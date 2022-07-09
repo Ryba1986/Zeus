@@ -13,7 +13,7 @@ namespace Zeus.Infrastructure.Reports.Types.Base
       short SummaryRowOffset { get; init; }
 
       int GetDatePart(DateTime date);
-      string GetFileName(DateOnly date);
+      string GetFileName(string fileName, DateOnly date);
       string GetHeader(string value, string locationName, DateOnly date);
       Expression<Func<T, PlcGroupBy>> GetPlcGroup<T>() where T : BasePlc;
       DateRange GetRange(DateOnly date);
