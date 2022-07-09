@@ -20,7 +20,6 @@ using Zeus.Models.Devices.Dto;
 using Zeus.Models.Locations.Dto;
 using Zeus.Models.Reports.Dto;
 using Zeus.Models.Reports.Queries;
-using Zeus.Utilities.Extensions;
 
 namespace Zeus.Infrastructure.Handlers.Reports.Queries
 {
@@ -41,7 +40,7 @@ namespace Zeus.Infrastructure.Handlers.Reports.Queries
 
       public async Task<ReportFileDto> Handle(GetReportQuery request, CancellationToken cancellationToken)
       {
-         using ExcelPackage ep = request.Lang.GetReportTemplate();
+         using ExcelPackage ep = request.Language.GetReportTemplate();
          IReadOnlyCollection<string> templateSheetNames = ep.Workbook.Worksheets.GetSheetNames();
 
          IReportProcessor reportProcessor = _reportProcessors[request.Type];
@@ -51,7 +50,7 @@ namespace Zeus.Infrastructure.Handlers.Reports.Queries
 
          return new()
          {
-            Name = reportProcessor.GetFileName(_languageProcessors[request.Lang].FIleName, request.Date),
+            Name = reportProcessor.GetFileName(_languageProcessors[request.Language].FIleName, request.Date),
             Type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             Content = ep.GetAsByteArray()
          };
@@ -85,7 +84,7 @@ namespace Zeus.Infrastructure.Handlers.Reports.Queries
 
          foreach (LocationReportDto location in locations)
          {
-            ExcelWorksheet sheet = sheets.Copy($"{request.Type.GetDescription()}_{request.Lang.GetDescription()}", location.Name);
+            ExcelWorksheet sheet = sheets.CloneSheet(request, location);
             sheet.View.ZoomScale = 70;
 
             ExcelRange headerCell = sheet.Cells[1, 1];
