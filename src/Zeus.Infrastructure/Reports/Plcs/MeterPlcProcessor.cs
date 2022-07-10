@@ -84,6 +84,8 @@ namespace Zeus.Infrastructure.Reports.Plcs
 
          int summaryRowIndex = reportProcessor.StartingPoints.Row + reportProcessor.SummaryRowOffset;
 
+         sheet.Cells[reportProcessor.StartingPoints.Row - 4, startColumn].Value = device.Name;
+
          sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Average(x => x.InletTempAvg).Round();
          sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Min(x => x.InletTempMin).Round();
          sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Max(x => x.InletTempMax).Round();
@@ -102,8 +104,6 @@ namespace Zeus.Infrastructure.Reports.Plcs
 
          sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Max(x => x.VolumeSummaryMax) - beforeMeter.VolumeSummary;
          sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Max(x => x.EnergySummaryMax) - beforeMeter.EnergySummary;
-
-         sheet.Cells[reportProcessor.StartingPoints.Row - 4, startColumn].Value = device.Name;
       }
 
       private static async Task<IReadOnlyDictionary<int, MeterDto>> GetBeforeDataAsync(IQueryable<Meter> plc, DateOnly date, IReadOnlyCollection<DeviceReportDto> devices, IReportProcessor reportProcessor, TypeAdapterConfig mapper, CancellationToken cancellationToken)
