@@ -43,7 +43,7 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Commands
          {
             return Result.Error("Device not found.");
          }
-         if (existingDevice.Type != DeviceType.Rvd145Co && existingDevice.Type != DeviceType.Rvd145CoCwu)
+         if (existingDevice.Type != DeviceType.Rvd145Co && existingDevice.Type != DeviceType.Rvd145CoCo && existingDevice.Type != DeviceType.Rvd145CoCwu)
          {
             return Result.Error("Device type is incorrect.");
          }
