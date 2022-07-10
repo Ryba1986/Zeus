@@ -18,7 +18,7 @@ namespace Zeus.Enums.Devices
       ClimatixCoCo = 1010,
 
       [Description("ClimatixCoCwu")]
-      ClimatixCoCwu = 10020,
+      ClimatixCoCwu = 1020,
 
 
       [Description("Rvd145Co")]
