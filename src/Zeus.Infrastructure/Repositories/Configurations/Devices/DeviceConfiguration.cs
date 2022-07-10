@@ -57,6 +57,12 @@ namespace Zeus.Infrastructure.Repositories.Configurations.Devices
          builder.HasOne<Location>()
             .WithMany()
             .HasForeignKey(x => x.LocationId);
+
+         builder.Ignore(x => x.PlcType);
+         builder.Ignore(x => x.IsPlc);
+         builder.Ignore(x => x.IsCo1);
+         builder.Ignore(x => x.IsCo2);
+         builder.Ignore(x => x.IsCwu);
       }
    }
 }

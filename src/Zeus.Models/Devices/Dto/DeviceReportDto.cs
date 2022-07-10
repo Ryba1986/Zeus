@@ -9,38 +9,11 @@ namespace Zeus.Models.Devices.Dto
       public int LocationId { get; init; }
       public string Name { get; init; }
       public DeviceType Type { get; init; }
-
-      public PlcType PlcType =>
-         Type switch
-         {
-            DeviceType.Kamstrup or DeviceType.KamstrupRs500 => PlcType.Meter,
-            DeviceType.ClimatixCo or DeviceType.ClimatixCoCo or DeviceType.ClimatixCoCwu => PlcType.Climatix,
-            DeviceType.Rvd145Co or DeviceType.Rvd145CoCo or DeviceType.Rvd145CoCwu => PlcType.Rvd145,
-            _ => PlcType.None
-         };
-
-      public bool IsPlc =>
-         Type switch
-         {
-            DeviceType.Kamstrup or DeviceType.KamstrupRs500 => false,
-            _ => true
-         };
-
-      public bool IsCo1 => IsPlc;
-
-      public bool IsCo2 =>
-         Type switch
-         {
-            DeviceType.ClimatixCoCo or DeviceType.Rvd145CoCo => true,
-            _ => false
-         };
-
-      public bool IsCwu =>
-         Type switch
-         {
-            DeviceType.ClimatixCoCwu or DeviceType.Rvd145CoCwu => true,
-            _ => false
-         };
+      public PlcType PlcType { get; init; }
+      public bool IsPlc { get; init; }
+      public bool IsCo1 { get; init; }
+      public bool IsCo2 { get; init; }
+      public bool IsCwu { get; init; }
 
       public DeviceReportDto()
       {

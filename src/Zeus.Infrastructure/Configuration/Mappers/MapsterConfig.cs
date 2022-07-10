@@ -65,12 +65,7 @@ namespace Zeus.Infrastructure.Configuration.Mappers
             .Map(d => d.CreatedByName, s => s.Item2.Name)
             .Map(d => d.CreateDate, s => s.Item1.CreateDate);
 
-         cfg.NewConfig<Device, DeviceReportDto>()
-            .Ignore(x => x.IsPlc)
-            .Ignore(x => x.IsCo1)
-            .Ignore(x => x.IsCo2)
-            .Ignore(x => x.IsCwu)
-            .Ignore(x => x.PlcType);
+         cfg.NewConfig<Device, DeviceReportDto>();
 
          return cfg;
       }
