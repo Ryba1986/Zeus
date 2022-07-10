@@ -42,57 +42,57 @@ namespace Zeus.Infrastructure.Reports.Plcs
 
       private static void FillSheet(ExcelWorksheet sheet, DeviceReportDto device, IReadOnlyCollection<ClimatixReportDto> data, IReportProcessor reportProcessor)
       {
-         foreach (ClimatixReportDto clim in data)
+         foreach (ClimatixReportDto climatix in data)
          {
-            int rowIndex = reportProcessor.StartingPoints.Row + reportProcessor.GetDatePart(clim.Date);
+            int rowIndex = reportProcessor.StartingPoints.Row + reportProcessor.GetDatePart(climatix.Date);
 
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 0].Value = clim.OutsideTempAvg.Round();
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 1].Value = clim.OutsideTempMin.Round();
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 2].Value = clim.OutsideTempMax.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 0].Value = climatix.OutsideTempAvg.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 1].Value = climatix.OutsideTempMin.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 2].Value = climatix.OutsideTempMax.Round();
 
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 3].Value = clim.CoHighInletPresureAvg.Round();
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 4].Value = clim.CoHighInletPresureMin.Round();
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 5].Value = clim.CoHighInletPresureMax.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 3].Value = climatix.CoHighInletPresureAvg.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 4].Value = climatix.CoHighInletPresureMin.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 5].Value = climatix.CoHighInletPresureMax.Round();
 
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 6].Value = clim.CoHighOutletPresureAvg.Round();
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 7].Value = clim.CoHighOutletPresureMin.Round();
-            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 8].Value = clim.CoHighOutletPresureMax.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 6].Value = climatix.CoHighOutletPresureAvg.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 7].Value = climatix.CoHighOutletPresureMin.Round();
+            sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 8].Value = climatix.CoHighOutletPresureMax.Round();
 
             if (device.IsCo1)
             {
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 9].Value = clim.Co1LowInletTempAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 10].Value = clim.Co1LowInletTempMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 11].Value = clim.Co1LowInletTempMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 9].Value = climatix.Co1LowInletTempAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 10].Value = climatix.Co1LowInletTempMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 11].Value = climatix.Co1LowInletTempMax.Round();
 
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 12].Value = clim.Co1LowOutletTempAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 13].Value = clim.Co1LowOutletTempMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 14].Value = clim.Co1LowOutletTempMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 12].Value = climatix.Co1LowOutletTempAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 13].Value = climatix.Co1LowOutletTempMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 14].Value = climatix.Co1LowOutletTempMax.Round();
 
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 15].Value = clim.Co1LowOutletPresureAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 16].Value = clim.Co1LowOutletPresureMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 17].Value = clim.Co1LowOutletPresureMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 15].Value = climatix.Co1LowOutletPresureAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 16].Value = climatix.Co1LowOutletPresureMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 17].Value = climatix.Co1LowOutletPresureMax.Round();
             }
 
             if (device.IsCo2)
             {
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 18].Value = clim.Co2LowInletTempAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 19].Value = clim.Co2LowInletTempMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 20].Value = clim.Co2LowInletTempMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 18].Value = climatix.Co2LowInletTempAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 19].Value = climatix.Co2LowInletTempMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 20].Value = climatix.Co2LowInletTempMax.Round();
 
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 21].Value = clim.Co2LowOutletTempAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 22].Value = clim.Co2LowOutletTempMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 23].Value = clim.Co2LowOutletTempMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 21].Value = climatix.Co2LowOutletTempAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 22].Value = climatix.Co2LowOutletTempMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 23].Value = climatix.Co2LowOutletTempMax.Round();
 
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 24].Value = clim.Co2LowOutletPresureAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 25].Value = clim.Co2LowOutletPresureMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 26].Value = clim.Co2LowOutletPresureMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 24].Value = climatix.Co2LowOutletPresureAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 25].Value = climatix.Co2LowOutletPresureMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 26].Value = climatix.Co2LowOutletPresureMax.Round();
             }
 
             if (device.IsCwu)
             {
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 27].Value = clim.CwuTempAvg.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 28].Value = clim.CwuTempMin.Round();
-               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 29].Value = clim.CwuTempMax.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 27].Value = climatix.CwuTempAvg.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 28].Value = climatix.CwuTempMin.Round();
+               sheet.Cells[rowIndex, reportProcessor.StartingPoints.PlcColumn + 29].Value = climatix.CwuTempMax.Round();
             }
          }
 
