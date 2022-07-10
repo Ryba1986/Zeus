@@ -7,6 +7,7 @@
    "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
    "[vue]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
    "csharpsortusings.sort.usings.splitGroups": false,
+   "diffEditor.ignoreTrimWhitespace": false,
    "dotnet-test-explorer.enableTelemetry": false,
    "editor.bracketPairColorization.enabled": true,
    "editor.detectIndentation": false,
