@@ -136,6 +136,40 @@ CREATE TABLE [Device]
       CONSTRAINT [FK_Meter_DeviceId] FOREIGN KEY ([DeviceId]) REFERENCES [Device]([Id]),
    );
 
+   CREATE TABLE [Climatix]
+   (
+      [Date] DATETIME2 NOT NULL,
+      [DeviceId] INT NOT NULL,
+      [OutsideTemp] REAL NOT NULL,
+      [CoHighInletPresure] REAL NOT NULL,
+      [CoHighOutletPresure] REAL NOT NULL,
+      [Alarm] SMALLINT NOT NULL,
+      [Co1LowInletTemp] REAL NOT NULL,
+      [Co1LowOutletTemp] REAL NOT NULL,
+      [Co1LowOutletPresure] REAL NOT NULL,
+      [Co1HeatCurveTemp] REAL NOT NULL,
+      [Co1PumpAlarm] BIT NOT NULL,
+      [Co1PumpStatus] BIT NOT NULL,
+      [Co1ValvePosition] TINYINT NOT NULL,
+      [Co1Status] BIT NOT NULL,
+      [Co2LowInletTemp] REAL NOT NULL,
+      [Co2LowOutletTemp] REAL NOT NULL,
+      [Co2LowOutletPresure] REAL NOT NULL,
+      [Co2HeatCurveTemp] REAL NOT NULL,
+      [Co2PumpAlarm] BIT NOT NULL,
+      [Co2PumpStatus] BIT NOT NULL,
+      [Co2ValvePosition] TINYINT NOT NULL,
+      [Co2Status] BIT NOT NULL,
+      [CwuTemp] REAL NOT NULL,
+      [CwuTempSet] REAL NOT NULL,
+      [CwuPumpAlarm] BIT NOT NULL,
+      [CwuPumpStatus] BIT NOT NULL,
+      [CwuValvePosition] TINYINT NOT NULL,
+      [CwuStatus] BIT NOT NULL,
+      CONSTRAINT [PK_Climatix_Date_DeviceId] PRIMARY KEY CLUSTERED ([Date], [DeviceId]),
+      CONSTRAINT [FK_Climatix_DeviceId] FOREIGN KEY ([DeviceId]) REFERENCES [Device]([Id]),
+   );
+
   CREATE TABLE [Rvd145]
    (
       [Date] DATETIME2 NOT NULL,

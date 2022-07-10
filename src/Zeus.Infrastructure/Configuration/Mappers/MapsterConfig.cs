@@ -5,6 +5,7 @@ using Mapster;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Locations;
 using Zeus.Domain.Plcs.Meters;
+using Zeus.Domain.Plcs.Climatixs;
 using Zeus.Domain.Plcs.Rvds;
 using Zeus.Domain.Users;
 using Zeus.Models.Devices.Dto;
@@ -12,6 +13,7 @@ using Zeus.Models.Locations.Dto;
 using Zeus.Models.Plcs.Meters.Dto;
 using Zeus.Models.Plcs.Rvds.Dto;
 using Zeus.Models.Users.Dto;
+using Zeus.Models.Plcs.Climatixs.Dto;
 
 namespace Zeus.Infrastructure.Configuration.Mappers
 {
@@ -24,6 +26,7 @@ namespace Zeus.Infrastructure.Configuration.Mappers
             .GetDeviceConfig()
             .GetUserConfig()
             .GetMeterConfig()
+            .GetClimatixConfig()
             .GetRvd145Config();
       }
 
@@ -103,8 +106,6 @@ namespace Zeus.Infrastructure.Configuration.Mappers
 
          cfg.NewConfig<Meter, MeterChartDto>();
 
-         cfg.NewConfig<Meter, MeterReportDto>();
-
          cfg.NewConfig<IEnumerable<Meter>, MeterReportDto>()
             .Map(d => d.Date, s => s.Min(x => x.Date))
             .Map(d => d.DeviceId, s => s.Min(x => x.DeviceId))
@@ -122,6 +123,85 @@ namespace Zeus.Infrastructure.Configuration.Mappers
             .Map(d => d.VolumeMax, s => s.Max(x => x.Volume))
             .Map(d => d.VolumeSummaryMax, s => s.Max(x => x.VolumeSummary))
             .Map(d => d.EnergySummaryMax, s => s.Max(x => x.EnergySummary));
+
+         return cfg;
+      }
+
+      private static TypeAdapterConfig GetClimatixConfig(this TypeAdapterConfig cfg)
+      {
+         cfg.NewConfig<Tuple<Climatix, Device>, ClimatixDto>()
+            .Map(d => d.Date, s => s.Item1.Date)
+            .Map(d => d.DeviceId, s => s.Item1.DeviceId)
+            .Map(d => d.OutsideTemp, s => s.Item1.OutsideTemp)
+            .Map(d => d.CoHighInletPresure, s => s.Item1.CoHighInletPresure)
+            .Map(d => d.CoHighOutletPresure, s => s.Item1.CoHighOutletPresure)
+            .Map(d => d.Alarm, s => s.Item1.Alarm)
+            .Map(d => d.Co1LowInletTemp, s => s.Item1.Co1LowInletTemp)
+            .Map(d => d.Co1LowOutletTemp, s => s.Item1.Co1LowOutletTemp)
+            .Map(d => d.Co1LowOutletPresure, s => s.Item1.Co1LowOutletPresure)
+            .Map(d => d.Co1HeatCurveTemp, s => s.Item1.Co1HeatCurveTemp)
+            .Map(d => d.Co1PumpAlarm, s => s.Item1.Co1PumpAlarm)
+            .Map(d => d.Co1PumpStatus, s => s.Item1.Co1PumpStatus)
+            .Map(d => d.Co1ValvePosition, s => s.Item1.Co1ValvePosition)
+            .Map(d => d.Co1Status, s => s.Item1.Co1Status)
+            .Map(d => d.Co2LowInletTemp, s => s.Item1.Co2LowInletTemp)
+            .Map(d => d.Co2LowOutletTemp, s => s.Item1.Co2LowOutletTemp)
+            .Map(d => d.Co2LowOutletPresure, s => s.Item1.Co2LowOutletPresure)
+            .Map(d => d.Co2HeatCurveTemp, s => s.Item1.Co2HeatCurveTemp)
+            .Map(d => d.Co2PumpAlarm, s => s.Item1.Co2PumpAlarm)
+            .Map(d => d.Co2PumpStatus, s => s.Item1.Co2PumpStatus)
+            .Map(d => d.Co2ValvePosition, s => s.Item1.Co2ValvePosition)
+            .Map(d => d.Co2Status, s => s.Item1.Co2Status)
+            .Map(d => d.CwuTemp, s => s.Item1.CwuTemp)
+            .Map(d => d.CwuTempSet, s => s.Item1.CwuTempSet)
+            .Map(d => d.CwuPumpAlarm, s => s.Item1.CwuPumpAlarm)
+            .Map(d => d.CwuPumpStatus, s => s.Item1.CwuPumpStatus)
+            .Map(d => d.CwuValvePosition, s => s.Item1.CwuValvePosition)
+            .Map(d => d.CwuStatus, s => s.Item1.CwuStatus)
+            .Map(d => d.Name, s => s.Item2.Name)
+            .Ignore(x => x.IsDelayed);
+
+         cfg.NewConfig<Climatix, ClimatixChartDto>();
+
+         cfg.NewConfig<IEnumerable<Climatix>, ClimatixReportDto>()
+            .Map(d => d.Date, s => s.Min(x => x.Date))
+            .Map(d => d.DeviceId, s => s.Min(x => x.DeviceId))
+            .Map(d => d.OutsideTempAvg, s => s.Average(x => x.OutsideTemp))
+            .Map(d => d.OutsideTempMin, s => s.Min(x => x.OutsideTemp))
+            .Map(d => d.OutsideTempMax, s => s.Max(x => x.OutsideTemp))
+            .Map(d => d.CoHighInletPresureAvg, s => s.Average(x => x.CoHighInletPresure))
+            .Map(d => d.CoHighInletPresureMin, s => s.Min(x => x.CoHighInletPresure))
+            .Map(d => d.CoHighInletPresureMax, s => s.Max(x => x.CoHighInletPresure))
+            .Map(d => d.CoHighOutletPresureAvg, s => s.Average(x => x.CoHighOutletPresure))
+            .Map(d => d.CoHighOutletPresureMin, s => s.Min(x => x.CoHighOutletPresure))
+            .Map(d => d.CoHighOutletPresureMax, s => s.Max(x => x.CoHighOutletPresure))
+            .Map(d => d.Co1LowInletTempAvg, s => s.Average(x => x.Co1LowInletTemp))
+            .Map(d => d.Co1LowInletTempMin, s => s.Min(x => x.Co1LowInletTemp))
+            .Map(d => d.Co1LowInletTempMax, s => s.Max(x => x.Co1LowInletTemp))
+            .Map(d => d.Co1LowOutletTempAvg, s => s.Average(x => x.Co1LowOutletTemp))
+            .Map(d => d.Co1LowOutletTempMin, s => s.Min(x => x.Co1LowOutletTemp))
+            .Map(d => d.Co1LowOutletTempMax, s => s.Max(x => x.Co1LowOutletTemp))
+            .Map(d => d.Co1LowOutletPresureAvg, s => s.Average(x => x.Co1LowOutletPresure))
+            .Map(d => d.Co1LowOutletPresureMin, s => s.Min(x => x.Co1LowOutletPresure))
+            .Map(d => d.Co1LowOutletPresureMax, s => s.Max(x => x.Co1LowOutletPresure))
+            .Map(d => d.Co1HeatCurveTempAvg, s => s.Average(x => x.Co1HeatCurveTemp))
+            .Map(d => d.Co1HeatCurveTempMin, s => s.Min(x => x.Co1HeatCurveTemp))
+            .Map(d => d.Co1HeatCurveTempMax, s => s.Max(x => x.Co1HeatCurveTemp))
+            .Map(d => d.Co2LowInletTempAvg, s => s.Average(x => x.Co2LowInletTemp))
+            .Map(d => d.Co2LowInletTempMin, s => s.Min(x => x.Co2LowInletTemp))
+            .Map(d => d.Co2LowInletTempMax, s => s.Max(x => x.Co2LowInletTemp))
+            .Map(d => d.Co2LowOutletTempAvg, s => s.Average(x => x.Co2LowOutletTemp))
+            .Map(d => d.Co2LowOutletTempMin, s => s.Min(x => x.Co2LowOutletTemp))
+            .Map(d => d.Co2LowOutletTempMax, s => s.Max(x => x.Co2LowOutletTemp))
+            .Map(d => d.Co2LowOutletPresureAvg, s => s.Average(x => x.Co2LowOutletPresure))
+            .Map(d => d.Co2LowOutletPresureMin, s => s.Min(x => x.Co2LowOutletPresure))
+            .Map(d => d.Co2LowOutletPresureMax, s => s.Max(x => x.Co2LowOutletPresure))
+            .Map(d => d.Co2HeatCurveTempAvg, s => s.Average(x => x.Co2HeatCurveTemp))
+            .Map(d => d.Co2HeatCurveTempMin, s => s.Min(x => x.Co2HeatCurveTemp))
+            .Map(d => d.Co2HeatCurveTempMax, s => s.Max(x => x.Co2HeatCurveTemp))
+            .Map(d => d.CwuTempAvg, s => s.Average(x => x.CwuTemp))
+            .Map(d => d.CwuTempMin, s => s.Min(x => x.CwuTemp))
+            .Map(d => d.CwuTempMax, s => s.Max(x => x.CwuTemp));
 
          return cfg;
       }
@@ -149,8 +229,6 @@ namespace Zeus.Infrastructure.Configuration.Mappers
             .Ignore(x => x.IsDelayed);
 
          cfg.NewConfig<Rvd145, Rvd145ChartDto>();
-
-         cfg.NewConfig<Rvd145, Rvd145ReportDto>();
 
          cfg.NewConfig<IEnumerable<Rvd145>, Rvd145ReportDto>()
             .Map(d => d.Date, s => s.Min(x => x.Date))

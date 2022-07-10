@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Locations;
+using Zeus.Domain.Plcs.Climatixs;
 using Zeus.Domain.Plcs.Meters;
 using Zeus.Domain.Plcs.Rvds;
 using Zeus.Domain.Users;
@@ -23,6 +24,7 @@ namespace Zeus.Infrastructure.Repositories
       public DbSet<UserHistory> UserHistory { get; init; }
 
       public DbSet<Meter> Meter { get; init; }
+      public DbSet<Climatix> Climatix { get; init; }
       public DbSet<Rvd145> Rvd145 { get; init; }
 
       public UnitOfWork(DbContextOptions<UnitOfWork> options) : base(options)
@@ -37,6 +39,7 @@ namespace Zeus.Infrastructure.Repositories
          UserHistory = Set<UserHistory>();
 
          Meter = Set<Meter>();
+         Climatix = Set<Climatix>();
          Rvd145 = Set<Rvd145>();
       }
 
