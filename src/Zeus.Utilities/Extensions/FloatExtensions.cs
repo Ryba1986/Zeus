@@ -6,7 +6,7 @@ namespace Zeus.Utilities.Extensions
    {
       public static float Round(this float value)
       {
-         return MathF.Round(value, 2);
+         return MathF.Round(value, 1);
       }
    }
 }
