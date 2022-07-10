@@ -14,7 +14,8 @@ namespace Zeus.Models.Devices.Dto
          Type switch
          {
             DeviceType.Kamstrup or DeviceType.KamstrupRs500 => PlcType.Meter,
-            DeviceType.Rvd145Co or DeviceType.Rvd145CoCwu => PlcType.Rvd145,
+            DeviceType.ClimatixCo or DeviceType.ClimatixCoCo or DeviceType.ClimatixCoCwu => PlcType.Climatix,
+            DeviceType.Rvd145Co or DeviceType.Rvd145CoCo or DeviceType.Rvd145CoCwu => PlcType.Rvd145,
             _ => PlcType.None
          };
 

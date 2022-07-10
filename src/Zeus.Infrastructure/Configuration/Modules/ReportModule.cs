@@ -38,6 +38,10 @@ namespace Zeus.Infrastructure.Configuration.Modules
             .Keyed<IPlcProcessor>(PlcType.Meter);
 
          builder
+            .RegisterType<ClimatixPlcProcessor>()
+            .Keyed<IPlcProcessor>(PlcType.Climatix);
+
+         builder
             .RegisterType<Rvd145PlcProcessor>()
             .Keyed<IPlcProcessor>(PlcType.Rvd145);
       }
