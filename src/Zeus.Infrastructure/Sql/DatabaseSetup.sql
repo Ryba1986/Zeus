@@ -134,7 +134,7 @@ CREATE TABLE [Device]
       [ErrorCode] SMALLINT NOT NULL,
       CONSTRAINT [PK_Meter_Date_DeviceId] PRIMARY KEY CLUSTERED ([Date], [DeviceId]),
       CONSTRAINT [FK_Meter_DeviceId] FOREIGN KEY ([DeviceId]) REFERENCES [Device]([Id]),
-   );
+   ) WITH (DATA_COMPRESSION = PAGE);
 
    CREATE TABLE [Climatix]
    (
@@ -168,7 +168,7 @@ CREATE TABLE [Device]
       [CwuStatus] BIT NOT NULL,
       CONSTRAINT [PK_Climatix_Date_DeviceId] PRIMARY KEY CLUSTERED ([Date], [DeviceId]),
       CONSTRAINT [FK_Climatix_DeviceId] FOREIGN KEY ([DeviceId]) REFERENCES [Device]([Id]),
-   );
+   ) WITH (DATA_COMPRESSION = PAGE);
 
   CREATE TABLE [Rvd145]
    (
@@ -190,7 +190,7 @@ CREATE TABLE [Device]
       [CwuStatus] BIT NOT NULL,
       CONSTRAINT [PK_Rvd145_Date_DeviceId] PRIMARY KEY CLUSTERED ([Date], [DeviceId]),
       CONSTRAINT [FK_Rvd145_DeviceId] FOREIGN KEY ([DeviceId]) REFERENCES [Device]([Id]),
-   );
+   ) WITH (DATA_COMPRESSION = PAGE);
 
    COMMIT TRANSACTION;
 END TRY
