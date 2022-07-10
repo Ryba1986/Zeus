@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Zeus.Client.Configuration;
 
 namespace Zeus.Client
 {
@@ -27,7 +28,7 @@ namespace Zeus.Client
             })
             .ConfigureContainer<ContainerBuilder>((ctx, builder) =>
             {
-               // builder.RegisterModule(new ZeusModule(ctx.Configuration));
+               builder.RegisterModule(new ZeusModule(ctx.Configuration));
             });
       }
    }
