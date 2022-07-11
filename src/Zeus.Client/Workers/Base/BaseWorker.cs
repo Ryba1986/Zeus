@@ -5,9 +5,9 @@ namespace Zeus.Client.Workers.Base
 {
    internal abstract class BaseWorker : BackgroundService
    {
-      protected readonly Mediator _mediator;
+      protected readonly IMediator _mediator;
 
-      public BaseWorker(Mediator mediator)
+      public BaseWorker(IMediator mediator)
       {
          _mediator = mediator;
       }
