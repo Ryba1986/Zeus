@@ -19,16 +19,14 @@ namespace Zeus.Client.Handlers.Locations.Queries
       public async Task<Result> Handle(GetLocationTokenQuery request, CancellationToken cancellationToken)
       {
          Result result = await _client.PostAsync("location/getLocationToken", request, cancellationToken);
-         if (result.IsSuccess)
-         {
-            _client.Authenticator = new JwtAuthenticator(result.Value);
-         }
-         else
+         if (!result.IsSuccess)
          {
             _client.Authenticator = null;
+            return result;
          }
 
-         return result;
+         _client.Authenticator = new JwtAuthenticator(result.Value);
+         return Result.Success();
       }
    }
 }
