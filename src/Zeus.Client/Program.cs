@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Zeus.Client.Configuration;
+using Zeus.Client.Workers;
 
 namespace Zeus.Client
 {
@@ -23,8 +25,7 @@ namespace Zeus.Client
             .UseSystemd()
             .ConfigureServices(services =>
             {
-               // services.AddHostedService<AuthWorker>();
-               // services.AddHostedService<PlcWorker>();
+               services.AddHostedService<AuthenticationWorker>();
             })
             .ConfigureContainer<ContainerBuilder>((ctx, builder) =>
             {

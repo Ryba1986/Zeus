@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using RestSharp;
 using Zeus.Models.Base;
 
@@ -7,12 +8,12 @@ namespace Zeus.Client.Extensions
 {
    internal static class RestClientExtensions
    {
-      public static async Task<Result> PostAsync<T>(this RestClient client, string url, T? data, CancellationToken cancellationToken) where T : class
+      public static async Task<Result> PostAsync(this RestClient client, string url, IRequest<Result>? command, CancellationToken cancellationToken)
       {
          RestRequest request = new(url);
-         if (data is not null)
+         if (command is not null)
          {
-            request.AddJsonBody(data);
+            request.AddJsonBody(command);
          }
 
          RestResponse<Result> response = await client.ExecutePostAsync<Result>(request, cancellationToken);
