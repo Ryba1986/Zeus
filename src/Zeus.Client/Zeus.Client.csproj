@@ -30,8 +30,11 @@
    </PropertyGroup>
 
    <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.4.0" />
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
       <PackageReference Include="LiteDB" Version="5.0.12" />
+      <PackageReference Include="MediatR" Version="10.0.1" />
+      <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="8.1.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="7.0.0-preview.5.22301.12" />
       <PackageReference Include="NModbus" Version="3.0.72" />
       <PackageReference Include="NModbus.Serial" Version="3.0.72" />

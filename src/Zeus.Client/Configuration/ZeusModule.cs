@@ -15,6 +15,7 @@ namespace Zeus.Client.Configuration
 
       protected override void Load(ContainerBuilder builder)
       {
+         builder.RegisterModule<ServiceModule>();
          builder.RegisterModule(new SettingsModule(_configuration));
       }
    }
