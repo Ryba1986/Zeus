@@ -22,7 +22,7 @@ namespace Zeus.Utilities.Helpers
             .ToUpper() ?? string.Empty;
       }
 
-      public async static Task<string> GetTorHost(string filePath, CancellationToken cancellationToken)
+      public async static Task<string> GetTorHostAsync(string filePath, CancellationToken cancellationToken)
       {
          if (!File.Exists(filePath))
          {

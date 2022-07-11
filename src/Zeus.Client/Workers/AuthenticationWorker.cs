@@ -31,7 +31,7 @@ namespace Zeus.Client.Workers
                {
                   MacAddress = NetworkHelper.GetMacAddress(),
                   ClientVersion = AssemblyExtensions.GetAssemblyVersion(GetType()),
-                  Hostname = await NetworkHelper.GetTorHost(_settings.TorHostPath, cancellationToken)
+                  Hostname = await NetworkHelper.GetTorHostAsync(_settings.TorHostPath, cancellationToken)
                }, cancellationToken);
             }
 
