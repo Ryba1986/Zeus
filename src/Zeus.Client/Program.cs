@@ -25,7 +25,7 @@ namespace Zeus.Client
             .UseSystemd()
             .ConfigureServices(services =>
             {
-               services.AddHostedService<AuthenticationWorker>();
+               services.AddHostedService<AuthWorker>();
             })
             .ConfigureContainer<ContainerBuilder>((ctx, builder) =>
             {

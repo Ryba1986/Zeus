@@ -11,11 +11,11 @@ using Zeus.Utilities.Helpers;
 
 namespace Zeus.Client.Workers
 {
-   internal sealed class AuthenticationWorker : BaseWorker
+   internal sealed class AuthWorker : BaseWorker
    {
       private readonly ZeusSettings _settings;
 
-      public AuthenticationWorker(IMediator mediator, ZeusSettings settings) : base(mediator)
+      public AuthWorker(IMediator mediator, ZeusSettings settings) : base(mediator)
       {
          _settings = settings;
       }
