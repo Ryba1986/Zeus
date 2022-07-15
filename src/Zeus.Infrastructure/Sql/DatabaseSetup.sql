@@ -77,7 +77,7 @@ BEGIN TRY
       INDEX [IX_LocationHistory_LocationId] NONCLUSTERED ([LocationId]),
    );
 
-CREATE TABLE [Device]
+   CREATE TABLE [Device]
    (
       [Id] INT IDENTITY(1, 1) NOT NULL,
       [LocationId] INT NOT NULL,
@@ -170,7 +170,7 @@ CREATE TABLE [Device]
       CONSTRAINT [FK_Climatix_DeviceId] FOREIGN KEY ([DeviceId]) REFERENCES [Device]([Id]),
    ) WITH (DATA_COMPRESSION = PAGE);
 
-  CREATE TABLE [Rvd145]
+   CREATE TABLE [Rvd145]
    (
       [Date] DATETIME2 NOT NULL,
       [DeviceId] INT NOT NULL,
