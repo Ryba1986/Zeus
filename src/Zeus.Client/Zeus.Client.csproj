@@ -17,14 +17,14 @@
       <DefineTrace>false</DefineTrace>
       <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
       <Optimize>true</Optimize>
-      <EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+      <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
       <FileAlignment>1024</FileAlignment>
       <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
       <PublishReadyToRun>false</PublishReadyToRun>
       <PublishSingleFile>true</PublishSingleFile>
-      <PublishTrimmed>false</PublishTrimmed>
+      <PublishTrimmed>true</PublishTrimmed>
       <RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
-      <SelfContained>false</SelfContained>
+      <SelfContained>true</SelfContained>
       <TrimMode>link</TrimMode>
       <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
    </PropertyGroup>
