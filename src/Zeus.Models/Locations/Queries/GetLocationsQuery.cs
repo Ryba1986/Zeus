@@ -4,7 +4,7 @@ using Zeus.Models.Locations.Dto;
 
 namespace Zeus.Models.Locations.Queries
 {
-   public sealed class GetLocationsQuery : IRequest<IEnumerable<LocationDto>>
+   public sealed class GetLocationsQuery : IRequest<IReadOnlyCollection<LocationDto>>
    {
    }
 }

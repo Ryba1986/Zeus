@@ -14,13 +14,13 @@ using Zeus.Models.Users.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Users.Queries
 {
-   internal sealed class GetUserHistoryHandler : BaseRequestQueryHandler, IRequestHandler<GetUserHistoryQuery, IEnumerable<UserHistoryDto>>
+   internal sealed class GetUserHistoryHandler : BaseRequestQueryHandler, IRequestHandler<GetUserHistoryQuery, IReadOnlyCollection<UserHistoryDto>>
    {
       public GetUserHistoryHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
-      public async Task<IEnumerable<UserHistoryDto>> Handle(GetUserHistoryQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<UserHistoryDto>> Handle(GetUserHistoryQuery request, CancellationToken cancellationToken)
       {
          IQueryable<Tuple<UserHistory, User>> query =
             from userHistory in _uow.UserHistory

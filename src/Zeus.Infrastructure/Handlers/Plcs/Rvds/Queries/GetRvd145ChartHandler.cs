@@ -13,13 +13,13 @@ using Zeus.Models.Plcs.Rvds.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Queries
 {
-   internal sealed class GetRvd145ChartHandler : BaseRequestQueryHandler, IRequestHandler<GetRvd145ChartQuery, IEnumerable<Rvd145ChartDto>>
+   internal sealed class GetRvd145ChartHandler : BaseRequestQueryHandler, IRequestHandler<GetRvd145ChartQuery, IReadOnlyCollection<Rvd145ChartDto>>
    {
       public GetRvd145ChartHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
-      public async Task<IEnumerable<Rvd145ChartDto>> Handle(GetRvd145ChartQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<Rvd145ChartDto>> Handle(GetRvd145ChartQuery request, CancellationToken cancellationToken)
       {
          DateTime date = request.Date.ToDateTime(TimeOnly.MinValue);
 

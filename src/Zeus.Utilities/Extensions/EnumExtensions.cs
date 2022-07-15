@@ -18,12 +18,13 @@ namespace Zeus.Utilities.Extensions
             .Description ?? string.Empty;
       }
 
-      public static IEnumerable<KeyValuePair<int, string>> GetValues<T>() where T : Enum
+      public static IReadOnlyCollection<KeyValuePair<int, string>> GetValues<T>() where T : Enum
       {
          return Enum
             .GetValues(typeof(T))
             .Cast<T>()
-            .Select(x => new KeyValuePair<int, string>(Convert.ToInt32(x), x.GetDescription()));
+            .Select(x => new KeyValuePair<int, string>(Convert.ToInt32(x), x.GetDescription()))
+            .ToArray();
       }
    }
 }

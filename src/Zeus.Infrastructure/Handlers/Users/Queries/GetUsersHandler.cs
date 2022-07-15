@@ -12,13 +12,13 @@ using Zeus.Models.Users.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Users.Queries
 {
-   internal sealed class GetUsersHandler : BaseRequestQueryHandler, IRequestHandler<GetUsersQuery, IEnumerable<UserDto>>
+   internal sealed class GetUsersHandler : BaseRequestQueryHandler, IRequestHandler<GetUsersQuery, IReadOnlyCollection<UserDto>>
    {
       public GetUsersHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
-      public async Task<IEnumerable<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
       {
          return await _uow.User
             .AsNoTracking()

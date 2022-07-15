@@ -4,7 +4,7 @@ using Zeus.Models.Devices.Dto;
 
 namespace Zeus.Models.Devices.Queries
 {
-   public sealed class GetDeviceHistoryQuery : IRequest<IEnumerable<DeviceHistoryDto>>
+   public sealed class GetDeviceHistoryQuery : IRequest<IReadOnlyCollection<DeviceHistoryDto>>
    {
       public int DeviceId { get; init; }
    }

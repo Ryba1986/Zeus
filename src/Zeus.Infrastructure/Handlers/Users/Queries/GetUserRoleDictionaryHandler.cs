@@ -8,9 +8,9 @@ using Zeus.Utilities.Extensions;
 
 namespace Zeus.Infrastructure.Handlers.Users.Queries
 {
-   internal sealed class GetUserRoleDictionaryHandler : IRequestHandler<GetUserRoleDictionaryQuery, IEnumerable<KeyValuePair<int, string>>>
+   internal sealed class GetUserRoleDictionaryHandler : IRequestHandler<GetUserRoleDictionaryQuery, IReadOnlyCollection<KeyValuePair<int, string>>>
    {
-      public Task<IEnumerable<KeyValuePair<int, string>>> Handle(GetUserRoleDictionaryQuery request, CancellationToken cancellationToken)
+      public Task<IReadOnlyCollection<KeyValuePair<int, string>>> Handle(GetUserRoleDictionaryQuery request, CancellationToken cancellationToken)
       {
          return Task.FromResult(EnumExtensions.GetValues<UserRole>());
       }

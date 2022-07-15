@@ -8,9 +8,9 @@ using Zeus.Utilities.Extensions;
 
 namespace Zeus.Infrastructure.Handlers.Devices.Queries
 {
-   internal sealed class GetDeviceStopBitDictionaryHandler : IRequestHandler<GetDeviceStopBitDictionaryQuery, IEnumerable<KeyValuePair<int, string>>>
+   internal sealed class GetDeviceStopBitDictionaryHandler : IRequestHandler<GetDeviceStopBitDictionaryQuery, IReadOnlyCollection<KeyValuePair<int, string>>>
    {
-      public Task<IEnumerable<KeyValuePair<int, string>>> Handle(GetDeviceStopBitDictionaryQuery request, CancellationToken cancellationToken)
+      public Task<IReadOnlyCollection<KeyValuePair<int, string>>> Handle(GetDeviceStopBitDictionaryQuery request, CancellationToken cancellationToken)
       {
          return Task.FromResult(EnumExtensions.GetValues<StopBits>());
       }

@@ -13,13 +13,13 @@ using Zeus.Models.Plcs.Meters.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Queries
 {
-   internal sealed class GetMeterChartHandler : BaseRequestQueryHandler, IRequestHandler<GetMeterChartQuery, IEnumerable<MeterChartDto>>
+   internal sealed class GetMeterChartHandler : BaseRequestQueryHandler, IRequestHandler<GetMeterChartQuery, IReadOnlyCollection<MeterChartDto>>
    {
       public GetMeterChartHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
-      public async Task<IEnumerable<MeterChartDto>> Handle(GetMeterChartQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<MeterChartDto>> Handle(GetMeterChartQuery request, CancellationToken cancellationToken)
       {
          DateTime dateTime = request.Date.ToDateTime(TimeOnly.MinValue);
 

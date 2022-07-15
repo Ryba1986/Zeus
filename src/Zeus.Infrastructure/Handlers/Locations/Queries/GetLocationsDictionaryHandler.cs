@@ -10,13 +10,13 @@ using Zeus.Models.Locations.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Locations.Queries
 {
-   internal sealed class GetLocationsDictionaryHandler : BaseRequestHandler, IRequestHandler<GetLocationsDictionaryQuery, IEnumerable<KeyValuePair<int, string>>>
+   internal sealed class GetLocationsDictionaryHandler : BaseRequestHandler, IRequestHandler<GetLocationsDictionaryQuery, IReadOnlyCollection<KeyValuePair<int, string>>>
    {
       public GetLocationsDictionaryHandler(UnitOfWork uow) : base(uow)
       {
       }
 
-      public async Task<IEnumerable<KeyValuePair<int, string>>> Handle(GetLocationsDictionaryQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<KeyValuePair<int, string>>> Handle(GetLocationsDictionaryQuery request, CancellationToken cancellationToken)
       {
          return await _uow.Location
             .AsNoTracking()

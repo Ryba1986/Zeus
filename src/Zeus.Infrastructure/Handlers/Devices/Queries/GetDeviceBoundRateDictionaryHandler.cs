@@ -8,9 +8,9 @@ using Zeus.Utilities.Extensions;
 
 namespace Zeus.Infrastructure.Handlers.Devices.Queries
 {
-   internal sealed class GetDeviceBoundRateDictionaryHandler : IRequestHandler<GetDeviceBoundRateDictionaryQuery, IEnumerable<KeyValuePair<int, string>>>
+   internal sealed class GetDeviceBoundRateDictionaryHandler : IRequestHandler<GetDeviceBoundRateDictionaryQuery, IReadOnlyCollection<KeyValuePair<int, string>>>
    {
-      public Task<IEnumerable<KeyValuePair<int, string>>> Handle(GetDeviceBoundRateDictionaryQuery request, CancellationToken cancellationToken)
+      public Task<IReadOnlyCollection<KeyValuePair<int, string>>> Handle(GetDeviceBoundRateDictionaryQuery request, CancellationToken cancellationToken)
       {
          return Task.FromResult(EnumExtensions.GetValues<BoundRate>());
       }

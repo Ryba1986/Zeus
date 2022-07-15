@@ -13,13 +13,13 @@ using Zeus.Models.Plcs.Climatixs.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Plcs.Climatixs.Queries
 {
-   internal sealed class GetClimatixChartHandler : BaseRequestQueryHandler, IRequestHandler<GetClimatixChartQuery, IEnumerable<ClimatixChartDto>>
+   internal sealed class GetClimatixChartHandler : BaseRequestQueryHandler, IRequestHandler<GetClimatixChartQuery, IReadOnlyCollection<ClimatixChartDto>>
    {
       public GetClimatixChartHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
-      public async Task<IEnumerable<ClimatixChartDto>> Handle(GetClimatixChartQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<ClimatixChartDto>> Handle(GetClimatixChartQuery request, CancellationToken cancellationToken)
       {
          DateTime date = request.Date.ToDateTime(TimeOnly.MinValue);
 

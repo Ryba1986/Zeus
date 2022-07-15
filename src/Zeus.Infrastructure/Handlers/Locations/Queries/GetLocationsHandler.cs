@@ -12,13 +12,13 @@ using Zeus.Models.Locations.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Locations.Queries
 {
-   internal sealed class GetLocationsHandler : BaseRequestQueryHandler, IRequestHandler<GetLocationsQuery, IEnumerable<LocationDto>>
+   internal sealed class GetLocationsHandler : BaseRequestQueryHandler, IRequestHandler<GetLocationsQuery, IReadOnlyCollection<LocationDto>>
    {
       public GetLocationsHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
-      public async Task<IEnumerable<LocationDto>> Handle(GetLocationsQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<LocationDto>> Handle(GetLocationsQuery request, CancellationToken cancellationToken)
       {
          return await _uow.Location
             .AsNoTracking()

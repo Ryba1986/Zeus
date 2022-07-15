@@ -15,13 +15,13 @@ using Zeus.Models.Devices.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Devices.Queries
 {
-   internal sealed class GetDeviceHistoryHandler : BaseRequestQueryHandler, IRequestHandler<GetDeviceHistoryQuery, IEnumerable<DeviceHistoryDto>>
+   internal sealed class GetDeviceHistoryHandler : BaseRequestQueryHandler, IRequestHandler<GetDeviceHistoryQuery, IReadOnlyCollection<DeviceHistoryDto>>
    {
       public GetDeviceHistoryHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
-      public async Task<IEnumerable<DeviceHistoryDto>> Handle(GetDeviceHistoryQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<DeviceHistoryDto>> Handle(GetDeviceHistoryQuery request, CancellationToken cancellationToken)
       {
          IQueryable<Tuple<DeviceHistory, User>> query =
             from deviceHistory in _uow.DeviceHistory

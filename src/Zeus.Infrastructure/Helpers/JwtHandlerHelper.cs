@@ -55,7 +55,7 @@ namespace Zeus.Infrastructure.Helpers
          };
       }
 
-      private static Result CreateToken(DateRange range, IEnumerable<Claim> claims, JwtIssuer issuer, string tokenKey)
+      private static Result CreateToken(DateRange range, IReadOnlyCollection<Claim> claims, JwtIssuer issuer, string tokenKey)
       {
          SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(tokenKey));
          SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);

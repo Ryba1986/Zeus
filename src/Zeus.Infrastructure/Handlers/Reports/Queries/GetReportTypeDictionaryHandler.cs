@@ -8,9 +8,9 @@ using Zeus.Utilities.Extensions;
 
 namespace Zeus.Infrastructure.Handlers.Reports.Queries
 {
-   internal sealed class GetReportTypeDictionaryHandler : IRequestHandler<GetReportTypeDictionaryQuery, IEnumerable<KeyValuePair<int, string>>>
+   internal sealed class GetReportTypeDictionaryHandler : IRequestHandler<GetReportTypeDictionaryQuery, IReadOnlyCollection<KeyValuePair<int, string>>>
    {
-      public Task<IEnumerable<KeyValuePair<int, string>>> Handle(GetReportTypeDictionaryQuery request, CancellationToken cancellationToken)
+      public Task<IReadOnlyCollection<KeyValuePair<int, string>>> Handle(GetReportTypeDictionaryQuery request, CancellationToken cancellationToken)
       {
          return Task.FromResult(EnumExtensions.GetValues<ReportType>());
       }

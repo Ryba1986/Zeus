@@ -5,7 +5,7 @@ using Zeus.Models.Plcs.Meters.Dto;
 
 namespace Zeus.Models.Plcs.Meters.Queries
 {
-   public sealed class GetMeterChartQuery : IRequest<IEnumerable<MeterChartDto>>
+   public sealed class GetMeterChartQuery : IRequest<IReadOnlyCollection<MeterChartDto>>
    {
       public int DeviceId { get; init; }
       public DateOnly Date { get; init; }

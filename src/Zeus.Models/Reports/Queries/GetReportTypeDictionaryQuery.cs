@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Zeus.Models.Reports.Queries
 {
-   public sealed class GetReportTypeDictionaryQuery : IRequest<IEnumerable<KeyValuePair<int, string>>>
+   public sealed class GetReportTypeDictionaryQuery : IRequest<IReadOnlyCollection<KeyValuePair<int, string>>>
    {
    }
 }

@@ -15,13 +15,13 @@ using Zeus.Models.Locations.Queries;
 
 namespace Zeus.Infrastructure.Handlers.Locations.Queries
 {
-   internal sealed class GetLocationHistoryHandler : BaseRequestQueryHandler, IRequestHandler<GetLocationHistoryQuery, IEnumerable<LocationHistoryDto>>
+   internal sealed class GetLocationHistoryHandler : BaseRequestQueryHandler, IRequestHandler<GetLocationHistoryQuery, IReadOnlyCollection<LocationHistoryDto>>
    {
       public GetLocationHistoryHandler(UnitOfWork uow, TypeAdapterConfig mapper) : base(uow, mapper)
       {
       }
 
-      public async Task<IEnumerable<LocationHistoryDto>> Handle(GetLocationHistoryQuery request, CancellationToken cancellationToken)
+      public async Task<IReadOnlyCollection<LocationHistoryDto>> Handle(GetLocationHistoryQuery request, CancellationToken cancellationToken)
       {
          IQueryable<Tuple<LocationHistory, User>> query =
             from locationHistory in _uow.LocationHistory
