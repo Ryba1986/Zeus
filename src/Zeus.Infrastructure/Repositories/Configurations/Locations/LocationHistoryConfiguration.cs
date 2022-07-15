@@ -21,7 +21,6 @@ namespace Zeus.Infrastructure.Repositories.Configurations.Locations
 
          builder.Property(x => x.MacAddress)
             .HasMaxLength(12)
-            .IsFixedLength()
             .IsRequired();
 
          builder.Property(x => x.IncludeReport)
