@@ -26,6 +26,7 @@ namespace Zeus.Client
             .ConfigureServices(services =>
             {
                services.AddHostedService<AuthWorker>();
+               services.AddHostedService<PlcReaderWorker>();
             })
             .ConfigureContainer<ContainerBuilder>((ctx, builder) =>
             {
