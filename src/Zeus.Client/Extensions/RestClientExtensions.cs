@@ -8,13 +8,23 @@ namespace Zeus.Client.Extensions
 {
    internal static class RestClientExtensions
    {
-      public static async Task<Result> PostAsync(this RestClient client, string url, IRequest<Result>? command, CancellationToken cancellationToken)
+
+      public static async Task<T?> GetAsync<T>(this RestClient client, string url, IRequest<T> query, CancellationToken cancellationToken) where T : class
       {
          RestRequest request = new(url);
-         if (command is not null)
-         {
-            request.AddJsonBody(command);
-         }
+         request.AddJsonBody(query);
+
+         RestResponse<T> response = await client.ExecuteGetAsync<T>(request, cancellationToken);
+
+         return response.IsSuccessful
+            ? response.Data
+            : null;
+      }
+
+      public static async Task<Result> PostAsync(this RestClient client, string url, IRequest<Result> command, CancellationToken cancellationToken)
+      {
+         RestRequest request = new(url);
+         request.AddJsonBody(command);
 
          RestResponse<Result> response = await client.ExecutePostAsync<Result>(request, cancellationToken);
 

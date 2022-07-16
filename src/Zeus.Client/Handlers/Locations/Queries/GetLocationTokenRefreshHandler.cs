@@ -18,7 +18,7 @@ namespace Zeus.Client.Handlers.Locations.Queries
 
       public async Task<Result> Handle(GetLocationTokenRefreshQuery request, CancellationToken cancellationToken)
       {
-         Result result = await _client.PostAsync("location/getLocationTokenRefresh", null, cancellationToken);
+         Result result = await _client.PostAsync("location/getLocationTokenRefresh", request, cancellationToken);
          if (!result.IsSuccess)
          {
             _client.Authenticator = null;
