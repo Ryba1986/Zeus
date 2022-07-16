@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -32,8 +33,16 @@ namespace Zeus.Client.Workers
             IReadOnlyCollection<DeviceDto> devices = await _mediator.Send(new GetDevicesFromLocationQuery(), cancellationToken);
             foreach (DeviceDto device in devices)
             {
-               BaseCreatePlcCommand command = await _modbusProcessors[device.PlcType].GetPlcAsync(device, cancellationToken);
-               await _mediator.Send(command, cancellationToken);
+               try
+               {
+                  BaseCreatePlcCommand command = await _modbusProcessors[device.PlcType].GetPlcAsync(device, cancellationToken);
+                  await _mediator.Send(command, cancellationToken);
+               }
+               catch (Exception ex)
+               {
+                  // TODO: move to other logic
+                  Console.WriteLine(ex.Message);
+               }
             }
 
             sw.Stop();
