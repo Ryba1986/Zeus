@@ -13,11 +13,8 @@ namespace Zeus.Client.Workers
 {
    internal sealed class AuthWorker : BaseWorker
    {
-      private readonly ZeusSettings _settings;
-
-      public AuthWorker(IMediator mediator, ZeusSettings settings) : base(mediator)
+      public AuthWorker(IMediator mediator, ZeusSettings settings) : base(mediator, settings)
       {
-         _settings = settings;
       }
 
       protected override async Task ExecuteAsync(CancellationToken cancellationToken)
