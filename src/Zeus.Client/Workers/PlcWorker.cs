@@ -14,11 +14,11 @@ using Zeus.Models.Devices.Queries;
 
 namespace Zeus.Client.Workers
 {
-   internal sealed class PlcReaderWorker : BaseWorker
+   internal sealed class PlcWorker : BaseWorker
    {
       private readonly IIndex<PlcType, IModbusProcessor> _modbusProcessors;
 
-      public PlcReaderWorker(IMediator mediator, ZeusSettings settings, IIndex<PlcType, IModbusProcessor> modbusProcessors) : base(mediator, settings)
+      public PlcWorker(IMediator mediator, ZeusSettings settings, IIndex<PlcType, IModbusProcessor> modbusProcessors) : base(mediator, settings)
       {
          _modbusProcessors = modbusProcessors;
       }
