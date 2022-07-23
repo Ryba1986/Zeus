@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
@@ -36,6 +37,9 @@ namespace Zeus.Client.Modbus.Climatixs
 
          return new CreateClimatixCommand()
          {
+            Date = DateTime.Now,
+            DeviceId = device.Id,
+
             Alarm = inputStates[2 - 1] || inputStates[1 - 1],
             Co1PumpAlarm = inputStates[430 - 1],
             Co1PumpStatus = inputStates[492 - 1],
