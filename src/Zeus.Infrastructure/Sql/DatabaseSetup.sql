@@ -143,7 +143,7 @@ BEGIN TRY
       [OutsideTemp] REAL NOT NULL,
       [CoHighInletPresure] REAL NOT NULL,
       [CoHighOutletPresure] REAL NOT NULL,
-      [Alarm] SMALLINT NOT NULL,
+      [Alarm] BIT NOT NULL,
       [Co1LowInletTemp] REAL NOT NULL,
       [Co1LowOutletTemp] REAL NOT NULL,
       [Co1LowOutletPresure] REAL NOT NULL,
