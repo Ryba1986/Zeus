@@ -27,7 +27,6 @@ namespace Zeus.Client.Handlers.Devices.Queries
                .ToArray();
          }
 
-         // TODO: update only when configuration changes
          _database.ReplaceAll(result);
          return result;
       }

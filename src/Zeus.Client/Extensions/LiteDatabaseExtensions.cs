@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using LiteDB;
 using Zeus.Models.Base.Commands;
+using Zeus.Models.Base.Dto;
 
 namespace Zeus.Client.Extensions
 {
@@ -29,9 +32,27 @@ namespace Zeus.Client.Extensions
             .DeleteMany(x => x.Id == plc.Id);
       }
 
-      public static void ReplaceAll<T>(this LiteDatabase database, IReadOnlyCollection<T> entities) where T : class
+      public static void ReplaceAll<T>(this LiteDatabase database, IReadOnlyCollection<T> entities) where T : BaseDto
       {
          ILiteCollection<T> collection = database.GetCollection<T>();
+
+         IReadOnlyCollection<string> entitiesVersions = entities
+            .OrderBy(x => x.Id)
+            .Select(x => Convert.ToHexString(x.Version))
+            .ToArray();
+
+         IReadOnlyCollection<string> storageVersions = collection
+            .Query()
+            .ToArray()
+            .OrderBy(x => x.Id)
+            .Select(x => Convert.ToHexString(x.Version))
+            .ToArray();
+
+         if (entitiesVersions.SequenceEqual(storageVersions))
+         {
+            return;
+         }
+
          collection.DeleteAll();
          collection.Insert(entities);
       }
