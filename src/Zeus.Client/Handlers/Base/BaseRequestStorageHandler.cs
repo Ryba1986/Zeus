@@ -1,5 +1,11 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using LiteDB;
 using RestSharp;
+using Zeus.Client.Extensions;
+using Zeus.Models.Base;
+using Zeus.Models.Base.Commands;
 
 namespace Zeus.Client.Handlers.Base
 {
@@ -10,6 +16,33 @@ namespace Zeus.Client.Handlers.Base
       public BaseRequestStorageHandler(RestClient client, LiteDatabase database) : base(client)
       {
          _database = database;
+      }
+
+      protected async Task<Result> CreatePlcAsync<T>(string url, T entity, CancellationToken cancellationToken) where T : BaseCreatePlcCommand
+      {
+         Result result = await _client.PostAsync(url, entity, cancellationToken);
+         if (!result.IsSuccess)
+         {
+            _database.InsertPlc(entity);
+         }
+
+         await RestorePlcAsync<T>(url, cancellationToken);
+         return result;
+      }
+
+      private async Task RestorePlcAsync<T>(string url, CancellationToken cancellationToken) where T : BaseCreatePlcCommand
+      {
+         IReadOnlyCollection<T> plcs = _database.GetPlcAll<T>();
+         foreach (T plc in plcs)
+         {
+            Result result = await _client.PostAsync(url, plc, cancellationToken);
+            if (!result.IsSuccess)
+            {
+               continue;
+            }
+
+            _database.RemovePlc(plc);
+         }
       }
    }
 }

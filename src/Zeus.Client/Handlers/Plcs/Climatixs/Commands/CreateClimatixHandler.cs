@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LiteDB;
 using MediatR;
 using RestSharp;
-using Zeus.Client.Extensions;
 using Zeus.Client.Handlers.Base;
 using Zeus.Models.Base;
 using Zeus.Models.Plcs.Climatixs.Commands;
@@ -16,15 +15,9 @@ namespace Zeus.Client.Handlers.Plcs.Climatixs.Commands
       {
       }
 
-      public async Task<Result> Handle(CreateClimatixCommand request, CancellationToken cancellationToken)
+      public Task<Result> Handle(CreateClimatixCommand request, CancellationToken cancellationToken)
       {
-         Result result = await _client.PostAsync("climatix/createClimatix", request, cancellationToken);
-         if (!result.IsSuccess)
-         {
-            _database.InsertPlc(request);
-         }
-
-         return result;
+         return CreatePlcAsync("climatix/createClimatix", request, cancellationToken);
       }
    }
 }
