@@ -46,7 +46,7 @@ namespace Zeus.Client.Workers
             }
 
             sw.Stop();
-            await Task.Delay(GetPlcRefreshInterval(sw), cancellationToken);
+            await GetPlcIntervalAsync(sw.Elapsed, cancellationToken);
          }
       }
    }

@@ -1,4 +1,6 @@
-using System.Diagnostics;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Zeus.Client.Settings;
@@ -16,15 +18,15 @@ namespace Zeus.Client.Workers.Base
          _settings = settings;
       }
 
-      protected int GetPlcRefreshInterval(Stopwatch sw)
+      protected Task GetPlcIntervalAsync(TimeSpan elapsedTime, CancellationToken cancellationToken)
       {
-         int diff = _settings.PlcRefreshInterval - (int)sw.ElapsedMilliseconds;
-         if (diff < 0)
+         TimeSpan intervalTime = TimeSpan.FromMilliseconds(_settings.PlcRefreshInterval);
+         if (elapsedTime >= intervalTime)
          {
-            return 0;
+            return Task.CompletedTask;
          }
 
-         return diff;
+         return Task.Delay(intervalTime - elapsedTime, cancellationToken);
       }
    }
 }
