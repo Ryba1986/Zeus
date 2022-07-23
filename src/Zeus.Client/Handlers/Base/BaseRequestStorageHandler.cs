@@ -21,12 +21,15 @@ namespace Zeus.Client.Handlers.Base
       protected async Task<Result> CreatePlcAsync<T>(string url, T entity, CancellationToken cancellationToken) where T : BaseCreatePlcCommand
       {
          Result result = await _client.PostAsync(url, entity, cancellationToken);
-         if (!result.IsSuccess)
+         if (result.IsSuccess)
+         {
+            await RestorePlcAsync<T>(url, cancellationToken);
+         }
+         else
          {
             _database.InsertPlc(entity);
          }
 
-         await RestorePlcAsync<T>(url, cancellationToken);
          return result;
       }
 
