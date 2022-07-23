@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using LiteDB;
 using MediatR;
 using RestSharp;
 using Zeus.Client.Extensions;
@@ -9,9 +10,9 @@ using Zeus.Models.Plcs.Meters.Commands;
 
 namespace Zeus.Client.Handlers.Plcs.Meters.Commands
 {
-   internal sealed class CreateMeterHandler : BaseRequestHandler, IRequestHandler<CreateMeterCommand, Result>
+   internal sealed class CreateMeterHandler : BaseRequestStorageHandler, IRequestHandler<CreateMeterCommand, Result>
    {
-      public CreateMeterHandler(RestClient client) : base(client)
+      public CreateMeterHandler(RestClient client, LiteDatabase database) : base(client, database)
       {
       }
 
@@ -20,7 +21,7 @@ namespace Zeus.Client.Handlers.Plcs.Meters.Commands
          Result result = await _client.PostAsync("meter/createMeter", request, cancellationToken);
          if (!result.IsSuccess)
          {
-            // TODO: add local storage logic
+            _database.InsertPlc(request);
          }
 
          return result;
