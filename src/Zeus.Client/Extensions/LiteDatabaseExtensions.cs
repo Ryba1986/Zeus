@@ -15,18 +15,18 @@ namespace Zeus.Client.Extensions
             .ToArray();
       }
 
-      public static void InsertPlc<T>(this LiteDatabase database, T entity) where T : BaseCreatePlcCommand
+      public static void InsertPlc<T>(this LiteDatabase database, T plc) where T : BaseCreatePlcCommand
       {
          database
             .GetCollection<T>()
-            .Insert(entity);
+            .Insert(plc);
       }
 
-      public static void RemovePlc<T>(this LiteDatabase database, T entity) where T : BaseCreatePlcCommand
+      public static void RemovePlc<T>(this LiteDatabase database, T plc) where T : BaseCreatePlcCommand
       {
          database
             .GetCollection<T>()
-            .DeleteMany(x => x.Id == entity.Id);
+            .DeleteMany(x => x.Id == plc.Id);
       }
 
       public static void ReplaceAll<T>(this LiteDatabase database, IReadOnlyCollection<T> entities) where T : class
