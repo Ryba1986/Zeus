@@ -449,3 +449,6 @@ dist/
 
 # Yarn
 yarn.lock
+
+# Local storage for client
+ZeusClientDb*.db

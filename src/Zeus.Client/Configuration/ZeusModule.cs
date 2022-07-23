@@ -1,6 +1,9 @@
+using System.IO;
 using Autofac;
+using LiteDB;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using RestSharp;
 using Zeus.Client.Modbus.Base;
 using Zeus.Client.Modbus.Climatixs;
@@ -23,10 +26,25 @@ namespace Zeus.Client.Configuration
 
       protected override void Load(ContainerBuilder builder)
       {
+         RegisterLiteDb(builder);
          RegisterMediator(builder);
          RegisterModbus(builder);
          RegisterRestClient(builder);
          RegisterSettings(builder);
+      }
+
+      private static void RegisterLiteDb(ContainerBuilder builder)
+      {
+         builder.Register((IHostEnvironment environment) =>
+         {
+            return new LiteDatabase($"{environment.ContentRootPath}{Path.DirectorySeparatorChar}ZeusClientDb.db")
+            {
+               CheckpointSize = 1,
+               UtcDate = false
+            };
+         })
+         .AsSelf()
+         .SingleInstance();
       }
 
       private void RegisterMediator(ContainerBuilder builder)
