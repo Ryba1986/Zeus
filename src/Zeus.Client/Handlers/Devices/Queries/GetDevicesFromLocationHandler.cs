@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using LiteDB;
 using MediatR;
 using RestSharp;
 using Zeus.Client.Extensions;
@@ -11,9 +11,9 @@ using Zeus.Models.Devices.Queries;
 
 namespace Zeus.Client.Handlers.Devices.Queries
 {
-   internal sealed class GetDevicesFromLocationHandler : BaseRequestHandler, IRequestHandler<GetDevicesFromLocationQuery, IReadOnlyCollection<DeviceDto>>
+   internal sealed class GetDevicesFromLocationHandler : BaseRequestStorageHandler, IRequestHandler<GetDevicesFromLocationQuery, IReadOnlyCollection<DeviceDto>>
    {
-      public GetDevicesFromLocationHandler(RestClient client) : base(client)
+      public GetDevicesFromLocationHandler(RestClient client, LiteDatabase database) : base(client, database)
       {
       }
 
@@ -22,10 +22,13 @@ namespace Zeus.Client.Handlers.Devices.Queries
          IReadOnlyCollection<DeviceDto>? result = await _client.GetAsync("device/getDevicesFromLocation", request, cancellationToken);
          if (result is null)
          {
-            // TODO: add local storage logic
-            return Array.Empty<DeviceDto>();
+            return _database.GetCollection<DeviceDto>()
+               .Query()
+               .ToArray();
          }
 
+         // TODO: update only when configuration changes
+         _database.ReplaceAll(result);
          return result;
       }
    }

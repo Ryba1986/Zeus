@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using LiteDB;
 using Zeus.Models.Base.Commands;
 
@@ -10,6 +11,13 @@ namespace Zeus.Client.Extensions
          database
             .GetCollection<T>()
             .Insert(entity);
+      }
+
+      public static void ReplaceAll<T>(this LiteDatabase database, IReadOnlyCollection<T> entities) where T : class
+      {
+         ILiteCollection<T> collection = database.GetCollection<T>();
+         collection.DeleteAll();
+         collection.Insert(entities);
       }
    }
 }
