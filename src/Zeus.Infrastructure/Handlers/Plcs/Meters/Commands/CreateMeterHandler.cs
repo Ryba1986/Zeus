@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Plcs.Meters;
-using Zeus.Enums.Devices;
+using Zeus.Enums.Plcs;
 using Zeus.Infrastructure.Handlers.Base;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Base;
@@ -42,7 +42,7 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Commands
          {
             return Result.Error("Device not found.");
          }
-         if (existingDevice.Type != DeviceType.Kamstrup && existingDevice.Type != DeviceType.KamstrupRs500)
+         if (existingDevice.PlcType != PlcType.Meter)
          {
             return Result.Error("Device type is incorrect.");
          }

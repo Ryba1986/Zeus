@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Plcs.Climatixs;
-using Zeus.Enums.Devices;
+using Zeus.Enums.Plcs;
 using Zeus.Infrastructure.Handlers.Base;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Base;
@@ -43,7 +43,7 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Climatixs.Commands
          {
             return Result.Error("Device not found.");
          }
-         if (existingDevice.Type != DeviceType.ClimatixCo && existingDevice.Type != DeviceType.ClimatixCoCo && existingDevice.Type != DeviceType.ClimatixCoCwu)
+         if (existingDevice.PlcType != PlcType.Climatix)
          {
             return Result.Error("Device type is incorrect.");
          }

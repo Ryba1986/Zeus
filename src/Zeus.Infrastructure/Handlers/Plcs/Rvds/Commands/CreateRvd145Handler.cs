@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zeus.Domain.Devices;
 using Zeus.Domain.Plcs.Rvds;
-using Zeus.Enums.Devices;
+using Zeus.Enums.Plcs;
 using Zeus.Infrastructure.Handlers.Base;
 using Zeus.Infrastructure.Repositories;
 using Zeus.Models.Base;
@@ -43,7 +43,7 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Commands
          {
             return Result.Error("Device not found.");
          }
-         if (existingDevice.Type != DeviceType.Rvd145Co && existingDevice.Type != DeviceType.Rvd145CoCo && existingDevice.Type != DeviceType.Rvd145CoCwu)
+         if (existingDevice.PlcType != PlcType.Rvd145)
          {
             return Result.Error("Device type is incorrect.");
          }
