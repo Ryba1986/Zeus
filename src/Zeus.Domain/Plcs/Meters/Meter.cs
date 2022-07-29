@@ -21,8 +21,8 @@ namespace Zeus.Domain.Plcs.Meters
          OutletTemp = outletTemp.Round();
          Power = power.Round();
          Volume = volume.Round();
-         VolumeSummary = volumeSummary;
-         EnergySummary = energySummary;
+         VolumeSummary = volumeSummary.Round();
+         EnergySummary = energySummary.Round();
          HourCount = hourCount;
          ErrorCode = errorCode;
       }

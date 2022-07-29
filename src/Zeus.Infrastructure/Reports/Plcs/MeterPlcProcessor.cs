@@ -75,10 +75,10 @@ namespace Zeus.Infrastructure.Reports.Plcs
             sheet.Cells[rowIndex, startColumn + 10].Value = meter.VolumeMin.Round();
             sheet.Cells[rowIndex, startColumn + 11].Value = meter.VolumeMax.Round();
 
-            sheet.Cells[rowIndex, startColumn + 12].Value = (meter.VolumeSummaryMax - beforeVolumeSummary).Round();
+            sheet.Cells[rowIndex, startColumn + 12].Value = meter.VolumeSummaryMax - beforeVolumeSummary;
             beforeVolumeSummary = meter.VolumeSummaryMax;
 
-            sheet.Cells[rowIndex, startColumn + 13].Value = (meter.EnergySummaryMax - beforeEnergySummary).Round();
+            sheet.Cells[rowIndex, startColumn + 13].Value = meter.EnergySummaryMax - beforeEnergySummary;
             beforeEnergySummary = meter.EnergySummaryMax;
          }
 
@@ -102,8 +102,8 @@ namespace Zeus.Infrastructure.Reports.Plcs
          sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Min(x => x.VolumeMin).Round();
          sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Max(x => x.VolumeMax).Round();
 
-         sheet.Cells[summaryRowIndex, startColumn++].Value = (currentData.Max(x => x.VolumeSummaryMax) - beforeMeter.VolumeSummary).Round();
-         sheet.Cells[summaryRowIndex, startColumn++].Value = (currentData.Max(x => x.EnergySummaryMax) - beforeMeter.EnergySummary).Round();
+         sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Max(x => x.VolumeSummaryMax) - beforeMeter.VolumeSummary;
+         sheet.Cells[summaryRowIndex, startColumn++].Value = currentData.Max(x => x.EnergySummaryMax) - beforeMeter.EnergySummary;
       }
 
       private static async Task<IReadOnlyDictionary<int, MeterDto>> GetBeforeDataAsync(IQueryable<Meter> plc, DateOnly date, IReadOnlyCollection<DeviceReportDto> devices, IReportProcessor reportProcessor, TypeAdapterConfig mapper, CancellationToken cancellationToken)
