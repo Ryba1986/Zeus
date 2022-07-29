@@ -8,8 +8,8 @@ namespace Zeus.Models.Plcs.Meters.Dto
       public float OutletTemp { get; init; }
       public float Power { get; init; }
       public float Volume { get; init; }
-      public int VolumeSummary { get; init; }
-      public int EnergySummary { get; init; }
+      public float VolumeSummary { get; init; }
+      public float EnergySummary { get; init; }
       public int HourCount { get; init; }
       public short ErrorCode { get; init; }
    }

@@ -20,7 +20,7 @@ namespace Zeus.Models.Plcs.Meters.Dto
       public float VolumeMin { get; init; }
       public float VolumeMax { get; init; }
 
-      public int VolumeSummaryMax { get; init; }
-      public int EnergySummaryMax { get; init; }
+      public float VolumeSummaryMax { get; init; }
+      public float EnergySummaryMax { get; init; }
    }
 }

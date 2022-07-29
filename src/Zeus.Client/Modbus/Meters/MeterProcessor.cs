@@ -40,8 +40,8 @@ namespace Zeus.Client.Modbus.Meters
             OutletTemp = ModbusUtility.GetSingle(table[11], table[10]),
             Power = table[19] == 2 ? power * 1000f : power,
             Volume = table[18] == 49 ? volume / 1000f : volume,
-            VolumeSummary = (int)ModbusUtility.GetUInt32(table[5], table[4]),
-            EnergySummary = Convert.ToInt32(ModbusUtility.GetSingle(table[1], table[0])),
+            VolumeSummary = ModbusUtility.GetSingle(table[5], table[4]),
+            EnergySummary = ModbusUtility.GetSingle(table[1], table[0]),
 
             HourCount = (int)ModbusUtility.GetUInt32(table[84], table[85]),
             SerialNumber = ModbusUtility.GetUInt32(table[76], table[77]).ToString(),
