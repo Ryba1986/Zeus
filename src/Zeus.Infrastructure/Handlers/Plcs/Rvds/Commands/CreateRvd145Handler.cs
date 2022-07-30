@@ -21,18 +21,6 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Commands
 
       public async Task<Result> Handle(CreateRvd145Command request, CancellationToken cancellationToken)
       {
-         Rvd145? existingRvd = await _uow.Rvd145
-           .AsNoTracking()
-           .FirstOrDefaultAsync(x =>
-              x.Date == request.Date.RoundToSecond() &&
-              x.DeviceId == request.DeviceId
-           , cancellationToken);
-
-         if (existingRvd is not null)
-         {
-            return Result.Success();
-         }
-
          Device? existingDevice = await _uow.Device
             .AsNoTracking()
             .FirstOrDefaultAsync(x =>
@@ -50,6 +38,18 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Rvds.Commands
          if (existingDevice.LocationId != request.LocationId)
          {
             return Result.Error("Device location is incorrect.");
+         }
+
+         Rvd145? existingRvd = await _uow.Rvd145
+           .AsNoTracking()
+           .FirstOrDefaultAsync(x =>
+              x.Date == request.Date.RoundToSecond() &&
+              x.DeviceId == request.DeviceId
+           , cancellationToken);
+
+         if (existingRvd is not null)
+         {
+            return Result.Success();
          }
 
          _uow.Rvd145.Add(new(request.OutsideTemp, request.CoHighInletPresure, request.Alarm, request.Co1HighOutletTemp, request.Co1LowInletTemp, request.Co1LowOutletPresure, request.Co1HeatCurveTemp, request.Co1PumpStatus, request.Co1Status, request.CwuTemp, request.CwuTempSet, request.CwuCirculationTemp, request.CwuPumpStatus, request.CwuStatus, request.Date, existingDevice.Id));

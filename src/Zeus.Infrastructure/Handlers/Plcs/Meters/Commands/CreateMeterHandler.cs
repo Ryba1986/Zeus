@@ -21,18 +21,6 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Commands
 
       public async Task<Result> Handle(CreateMeterCommand request, CancellationToken cancellationToken)
       {
-         Meter? existingMeter = await _uow.Meter
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x =>
-               x.Date == request.Date.RoundToSecond() &&
-               x.DeviceId == request.DeviceId
-            , cancellationToken);
-
-         if (existingMeter is not null)
-         {
-            return Result.Success();
-         }
-
          Device? existingDevice = await _uow.Device
             .FirstOrDefaultAsync(x =>
                x.Id == request.DeviceId
@@ -54,6 +42,18 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Meters.Commands
          if (!string.IsNullOrWhiteSpace(request.SerialNumber) && existingDevice.SerialNumber != request.SerialNumber)
          {
             existingDevice.Update(request.SerialNumber);
+         }
+
+         Meter? existingMeter = await _uow.Meter
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x =>
+               x.Date == request.Date.RoundToSecond() &&
+               x.DeviceId == request.DeviceId
+            , cancellationToken);
+
+         if (existingMeter is not null)
+         {
+            return Result.Success();
          }
 
          _uow.Meter.Add(new(request.InletTemp, request.OutletTemp, request.Power, request.Volume, request.VolumeSummary, request.EnergySummary, request.HourCount, request.ErrorCode, request.Date, existingDevice.Id));

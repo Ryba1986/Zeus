@@ -21,18 +21,6 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Climatixs.Commands
 
       public async Task<Result> Handle(CreateClimatixCommand request, CancellationToken cancellationToken)
       {
-         Climatix? existingClimatix = await _uow.Climatix
-           .AsNoTracking()
-           .FirstOrDefaultAsync(x =>
-              x.Date == request.Date.RoundToSecond() &&
-              x.DeviceId == request.DeviceId
-           , cancellationToken);
-
-         if (existingClimatix is not null)
-         {
-            return Result.Success();
-         }
-
          Device? existingDevice = await _uow.Device
             .AsNoTracking()
             .FirstOrDefaultAsync(x =>
@@ -50,6 +38,18 @@ namespace Zeus.Infrastructure.Handlers.Plcs.Climatixs.Commands
          if (existingDevice.LocationId != request.LocationId)
          {
             return Result.Error("Device location is incorrect.");
+         }
+
+         Climatix? existingClimatix = await _uow.Climatix
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x =>
+               x.Date == request.Date.RoundToSecond() &&
+               x.DeviceId == request.DeviceId
+            , cancellationToken);
+
+         if (existingClimatix is not null)
+         {
+            return Result.Success();
          }
 
          _uow.Climatix.Add(new(request.OutsideTemp, request.CoHighInletPresure, request.CoHighOutletPresure, request.Alarm, request.Co1LowInletTemp, request.Co1LowOutletTemp, request.Co1LowOutletPresure, request.Co1HeatCurveTemp, request.Co1PumpAlarm, request.Co1PumpStatus, request.Co1ValvePosition, request.Co1Status, request.Co2LowInletTemp, request.Co2LowOutletTemp, request.Co2LowOutletPresure, request.Co2HeatCurveTemp, request.Co2PumpAlarm, request.Co2PumpStatus, request.Co2ValvePosition, request.Co2Status, request.CwuTemp, request.CwuTempSet, request.CwuPumpAlarm, request.CwuPumpStatus, request.CwuValvePosition, request.CwuStatus, request.Date, request.DeviceId));
